@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .global-button {
+    @apply flex justify-center w-full py-3 border rounded-md gap-4 items-center hover:bg-gray-50;
+  }
+}

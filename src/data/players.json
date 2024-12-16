@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "Erling Haaland",
+    "team": "Manchester City",
+    "position": "Forward",
+    "image": "https://via.placeholder.com/150",
+    "goals": 25,
+    "assists": 5
+  },
+  {
+    "id": 2,
+    "name": "Harry Kane",
+    "team": "Bayern Munich",
+    "position": "Forward",
+    "image": "https://via.placeholder.com/150",
+    "goals": 20,
+    "assists": 7
+  },
+  {
+    "id": 3,
+    "name": "Kevin De Bruyne",
+    "team": "Manchester City",
+    "position": "Midfielder",
+    "image": "https://via.placeholder.com/150",
+    "goals": 5,
+    "assists": 12
+  }
+]
