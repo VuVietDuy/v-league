@@ -36,9 +36,9 @@ function Home() {
               </button>
             </div>
           </div>
-          <div className="rounded-xl overflow-hidden border">
+          <div className="rounded-xl overflow-hidden border mt-4">
             <div className="py-4 bg-blue-500">
-              <p className="text-center font-bold text-xl">Trận đấu tuần này</p>
+              <p className="text-center font-bold text-xl">Bảng xếp hạng</p>
             </div>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-500">
               <thead className="text-[12px] text-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b">

@@ -35,10 +35,10 @@ function Results() {
               <span className="text-sm font-semibold text-white">3</span>
             </div>
             <img className="w-[30px]" src="/images/binh-dinh.png" alt="" />
-            <span>Bình Định</span>
+            <span>Bình Định Football Club</span>
           </div>
         </div>
-        <div className="flex justify-end">San van dong Mỹ Đình</div>
+        <div className="hidden md:flex justify-end ">San van dong Mỹ Đình</div>
         <div className="flex justify-end">
           <ArrowRightOutlined />
         </div>

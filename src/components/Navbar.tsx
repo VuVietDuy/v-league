@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import binhDinh from "../assets/binh-dinh.png";
 import binhDuong from "../assets/binh-duong.png";
@@ -11,7 +11,12 @@ import quangNam from "../assets/quang-nam.jpg";
 import shbDaNang from "../assets/shb-da-nang.png";
 import thanhHoa from "../assets/thanh-hoa.png";
 import viettel from "../assets/viettel.jpg";
-import { CaretDownOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  CaretDownOutlined,
+  CloseOutlined,
+  MenuOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 
 const listClubs = [
   {
@@ -73,11 +78,42 @@ const listClubs = [
 
 function Navbar() {
   const [showClubs, setShowClubs] = useState(true);
+  const [isOpenNavbar, setIsOpenNavbar] = useState(false);
 
   const listTabTop = [
-    { path: "/", title: "Vô địch quốc gia" },
-    { path: "/results", title: "Hạng nhất quốc gia" },
-    { path: "/tables", title: "Cúp quốc gia" },
+    {
+      path: "/",
+      title: "Vô địch quốc gia",
+      childen: [
+        { path: "/", title: "Trang chủ" },
+        { path: "/results", title: "Kết quả" },
+        { path: "/tables", title: "Bảng thi đấu" },
+        { path: "/clubs", title: "Câu lạc bộ" },
+        { path: "/news", title: "Tin tức" },
+      ],
+    },
+    {
+      path: "/results",
+      title: "Hạng nhất quốc gia",
+      childen: [
+        { path: "/", title: "Trang chủ" },
+        { path: "/results", title: "Kết quả" },
+        { path: "/tables", title: "Bảng thi đấu" },
+        { path: "/clubs", title: "Câu lạc bộ" },
+        { path: "/news", title: "Tin tức" },
+      ],
+    },
+    {
+      path: "/tables",
+      title: "Cúp quốc gia",
+      childen: [
+        { path: "/", title: "Trang chủ" },
+        { path: "/results", title: "Kết quả" },
+        { path: "/tables", title: "Bảng thi đấu" },
+        { path: "/clubs", title: "Câu lạc bộ" },
+        { path: "/news", title: "Tin tức" },
+      ],
+    },
     { path: "/playoff", title: "Play-off" },
   ];
 
@@ -86,7 +122,6 @@ function Navbar() {
     { path: "/results", title: "Kết quả" },
     { path: "/tables", title: "Bảng thi đấu" },
     { path: "/clubs", title: "Câu lạc bộ" },
-    // { path: "/players", title: "Cầu thủ" },
     { path: "/news", title: "Tin tức" },
   ];
 
@@ -106,7 +141,7 @@ function Navbar() {
   return (
     <nav className="sticky top-0 z-10 bg-white shadow-md">
       {showClubs && (
-        <div className="bg-gray-100 py-2">
+        <div className="bg-gray-100 py-2 hidden md:block">
           <ul className="flex space-x-4 justify-center h-10">
             {listClubs.map((club, index) => (
               <li key={index}>
@@ -122,19 +157,22 @@ function Navbar() {
         </div>
       )}
       <div className="">
-        <div className="bg-primary">
-          <div className="container m-auto flex justify-between">
-            <ul className=" flex space-x-4">
+        <div className="bg-primary h-16 border-b-2 md:border-b-0 md:border-orange-500">
+          <div className="container m-auto flex md:justify-between justify-end">
+            <ul className="hidden md:flex space-x-4">
               {listTabTop.map((navItem, index) => (
-                <li className="group relative" key={index}>
+                <li
+                  className="group h-16 relative flex items-center"
+                  key={index}
+                >
                   <NavLink
-                    className="block py-4 px-6 text-white font-bold align-middle"
+                    className="block px-6 text-white font-bold align-middle"
                     to={navItem.path}
                   >
                     {navItem.title}
                     <CaretDownOutlined className="ml-4 text-[10px]" />
                   </NavLink>
-                  <ul className="absolute hidden group-hover:block w-56 bg-purple-700 text-white shadow-lg">
+                  <ul className="absolute top-16 hidden group-hover:block w-56 bg-purple-700 text-white shadow-lg">
                     <li className="hover:bg-purple-600 py-2 px-4">
                       <a href="#">Trang chủ</a>
                     </li>
@@ -161,10 +199,25 @@ function Navbar() {
               <button className="py-2 px-3 text-white rounded border border-primary hover:border-gray-200">
                 <SearchOutlined className="text-2xl" />
               </button>
+              {isOpenNavbar ? (
+                <button
+                  className="text-xl text-white block md:hidden"
+                  onClick={() => setIsOpenNavbar(false)}
+                >
+                  <CloseOutlined />
+                </button>
+              ) : (
+                <button
+                  className="text-2xl text-white block md:hidden"
+                  onClick={() => setIsOpenNavbar(true)}
+                >
+                  <MenuOutlined />
+                </button>
+              )}
             </div>
           </div>
         </div>
-        <ul className="flex container m-auto space-x-4container mx-auto ">
+        <ul className="hidden md:flex container m-auto space-x-4 mx-auto ">
           {listTab.map((navItem, index) => (
             <li key={index}>
               <NavLink
@@ -177,6 +230,29 @@ function Navbar() {
           ))}
         </ul>
       </div>
+      {isOpenNavbar && (
+        <div className="fixed top-16 right-0 left-0 bottom-0">
+          <ul className="absolute top-0 left-0 bottom-0 w-52 sm:w-72 bg-[#250428] flex flex-col gap-[2px]">
+            {listTabTop.map((navItem, index) => (
+              <li key={index} className="bg-primary">
+                <div className="py-4 px-6 text-white text-xs align-middle flex">
+                  <p>{navItem.title}</p>
+                  <CaretDownOutlined className="ml-4 text-[10px]" />
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="absolute top-0 left-52 sm:left-72 right-0 bottom-0 bg-white">
+            <ul className="text-primary">
+              {listTabTop[0].childen?.map((item, index) => (
+                <li className="hover:bg-purple-600 py-3 px-2 text-xs border-b">
+                  <a href="#">{item.title}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
