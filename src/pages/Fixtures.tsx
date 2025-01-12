@@ -1,0 +1,139 @@
+import { ArrowRightOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import fetcher from "../api/fetcher";
+import { IMatch } from "../types/match";
+
+function Fixtures() {
+  const [matches, setMatches] = useState<IMatch[]>([]);
+
+  useEffect(() => {
+    fetcher.get("matches").then((res) => {
+      console.log(res.data);
+
+      setMatches(res.data.data);
+    });
+  }, []);
+  return (
+    <div className="container m-auto px-10">
+      <h3 className="text-xl font-bold mt-6">Monday 16 December 2024</h3>
+      <div className="grid grid-cols-3 border-b py-2">
+        <div className="flex justify-center">
+          <div className="w-fit flex gap-2 items-center">
+            <span>Thanh Hóa</span>
+            <img className="w-[30px]" src="/images/binh-duong.png" alt="" />
+            <div className="bg-purple-950 px-2 rounded">
+              <span className="text-sm font-semibold text-white">3</span>
+              <span className="text-sm font-semibold text-white px-1">-</span>
+              <span className="text-sm font-semibold text-white">3</span>
+            </div>
+            <img className="w-[30px]" src="/images/binh-dinh.png" alt="" />
+            <span>Bình Định</span>
+          </div>
+        </div>
+        <div className="flex justify-end">San van dong Mỹ Đình</div>
+        <div className="flex justify-end">
+          <ArrowRightOutlined />
+        </div>
+      </div>
+      <div className="grid grid-cols-3 border-b py-2">
+        <div className="flex justify-center">
+          <div className="w-fit flex gap-2 items-center">
+            <span>Thanh Hóa</span>
+            <img className="w-[30px]" src="/images/binh-duong.png" alt="" />
+            <div className="bg-purple-950 px-2 rounded">
+              <span className="text-sm font-semibold text-white">3</span>
+              <span className="text-sm font-semibold text-white px-1">-</span>
+              <span className="text-sm font-semibold text-white">3</span>
+            </div>
+            <img className="w-[30px]" src="/images/binh-dinh.png" alt="" />
+            <span>Bình Định Football Club</span>
+          </div>
+        </div>
+        <div className="hidden md:flex justify-end ">San van dong Mỹ Đình</div>
+        <div className="flex justify-end">
+          <ArrowRightOutlined />
+        </div>
+      </div>
+      <div className="grid grid-cols-3 border-b py-2">
+        <div className="flex justify-center">
+          <div className="w-fit flex gap-2 items-center">
+            <span>Thanh Hóa</span>
+            <img className="w-[30px]" src="/images/binh-duong.png" alt="" />
+            <div className="bg-purple-950 px-2 rounded">
+              <span className="text-sm font-semibold text-white">3</span>
+              <span className="text-sm font-semibold text-white px-1">-</span>
+              <span className="text-sm font-semibold text-white">3</span>
+            </div>
+            <img className="w-[30px]" src="/images/binh-dinh.png" alt="" />
+            <span>Bình Định</span>
+          </div>
+        </div>
+        <div className="flex justify-end">San van dong Mỹ Đình</div>
+        <div className="flex justify-end">
+          <ArrowRightOutlined />
+        </div>
+      </div>
+      <h3 className="text-xl font-bold mt-6">Monday 16 December 2024</h3>
+      <div className="grid grid-cols-3 border-b py-2">
+        <div className="flex justify-center">
+          <div className="w-fit flex gap-2 items-center">
+            <span>Thanh Hóa</span>
+            <img className="w-[30px]" src="/images/binh-duong.png" alt="" />
+            <div className="bg-purple-950 px-2 rounded">
+              <span className="text-sm font-semibold text-white">3</span>
+              <span className="text-sm font-semibold text-white px-1">-</span>
+              <span className="text-sm font-semibold text-white">3</span>
+            </div>
+            <img className="w-[30px]" src="/images/binh-dinh.png" alt="" />
+            <span>Bình Định</span>
+          </div>
+        </div>
+        <div className="flex justify-end">San van dong Mỹ Đình</div>
+        <div className="flex justify-end">
+          <ArrowRightOutlined />
+        </div>
+      </div>
+      <div className="grid grid-cols-3 border-b py-2">
+        <div className="flex justify-center">
+          <div className="w-fit flex gap-2 items-center">
+            <span>Thanh Hóa</span>
+            <img className="w-[30px]" src="/images/binh-duong.png" alt="" />
+            <div className="bg-purple-950 px-2 rounded">
+              <span className="text-sm font-semibold text-white">3</span>
+              <span className="text-sm font-semibold text-white px-1">-</span>
+              <span className="text-sm font-semibold text-white">3</span>
+            </div>
+            <img className="w-[30px]" src="/images/binh-dinh.png" alt="" />
+            <span>Bình Định</span>
+          </div>
+        </div>
+        <div className="flex justify-end">San van dong Mỹ Đình</div>
+        <div className="flex justify-end">
+          <ArrowRightOutlined />
+        </div>
+      </div>
+      <h3 className="text-xl font-bold mt-6">Monday 16 December 2024</h3>
+      <div className="grid grid-cols-3 border-b py-2">
+        <div className="flex justify-center">
+          <div className="w-fit flex gap-2 items-center">
+            <span>Thanh Hóa</span>
+            <img className="w-[30px]" src="/images/binh-duong.png" alt="" />
+            <div className="bg-purple-950 px-2 rounded">
+              <span className="text-sm font-semibold text-white">3</span>
+              <span className="text-sm font-semibold text-white px-1">-</span>
+              <span className="text-sm font-semibold text-white">3</span>
+            </div>
+            <img className="w-[30px]" src="/images/binh-dinh.png" alt="" />
+            <span>Bình Định</span>
+          </div>
+        </div>
+        <div className="flex justify-end">San van dong Mỹ Đình</div>
+        <div className="flex justify-end">
+          <ArrowRightOutlined />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Fixtures;

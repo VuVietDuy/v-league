@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import binhDinh from "../assets/binh-dinh.png";
 import binhDuong from "../assets/binh-duong.png";
 import congAnHaNoi from "../assets/cong-an-ha-noi.png";
@@ -79,42 +79,46 @@ const listClubs = [
 function Navbar() {
   const [showClubs, setShowClubs] = useState(true);
   const [isOpenNavbar, setIsOpenNavbar] = useState(false);
+  const location = useLocation();
+  const tournament = location.pathname.split("/")[2];
 
   const listTabTop = [
     {
       path: "/",
+      title: "Trang chủ",
+    },
+    {
+      path: "vleague-1",
       title: "Vô địch quốc gia",
       childen: [
-        { path: "/", title: "Trang chủ" },
-        { path: "/results", title: "Kết quả" },
-        { path: "/tables", title: "Bảng thi đấu" },
-        { path: "/clubs", title: "Câu lạc bộ" },
-        { path: "/news", title: "Tin tức" },
+        { path: "/fixtures/vleague-1", title: "Lịch thi đấu" },
+        { path: "/results/vleague-1", title: "Kết quả" },
+        { path: "/tables/vleague-1", title: "Bảng xếp hạng" },
+        { path: "/clubs/vleague-1", title: "Câu lạc bộ" },
       ],
     },
     {
-      path: "/results",
+      path: "vleague-2",
       title: "Hạng nhất quốc gia",
       childen: [
-        { path: "/", title: "Trang chủ" },
-        { path: "/results", title: "Kết quả" },
-        { path: "/tables", title: "Bảng thi đấu" },
-        { path: "/clubs", title: "Câu lạc bộ" },
-        { path: "/news", title: "Tin tức" },
+        { path: "/fixtures/vleague-2", title: "Lịch thi đấu" },
+        { path: "/results/vleague-2", title: "Kết quả" },
+        { path: "/tables/vleague-2", title: "Bảng thi đấu" },
+        { path: "/clubs/vleague-2", title: "Câu lạc bộ" },
       ],
     },
     {
-      path: "/tables",
+      path: "national-cup",
       title: "Cúp quốc gia",
       childen: [
-        { path: "/", title: "Trang chủ" },
-        { path: "/results", title: "Kết quả" },
-        { path: "/tables", title: "Bảng thi đấu" },
-        { path: "/clubs", title: "Câu lạc bộ" },
-        { path: "/news", title: "Tin tức" },
+        { path: "/fixtures/national-cup", title: "Lịch thi đấu" },
+        { path: "/results/national-cup", title: "Kết quả" },
+        { path: "/tables/national-cup", title: "Bảng thi đấu" },
+        { path: "/clubs/national-cup", title: "Câu lạc bộ" },
       ],
     },
     { path: "/playoff", title: "Play-off" },
+    { path: "/news", title: "Tin tức" },
   ];
 
   const listTab = [
@@ -124,6 +128,8 @@ function Navbar() {
     { path: "/clubs", title: "Câu lạc bộ" },
     { path: "/news", title: "Tin tức" },
   ];
+
+  const subTab = listTabTop.find((item) => item.path === tournament)?.childen;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -165,30 +171,41 @@ function Navbar() {
                   className="group h-16 relative flex items-center"
                   key={index}
                 >
-                  <NavLink
-                    className="block px-6 text-white font-bold align-middle"
-                    to={navItem.path}
-                  >
-                    {navItem.title}
-                    <CaretDownOutlined className="ml-4 text-[10px]" />
-                  </NavLink>
-                  <ul className="absolute top-16 hidden group-hover:block w-56 bg-purple-700 text-white shadow-lg">
-                    <li className="hover:bg-purple-600 py-2 px-4">
-                      <a href="#">Trang chủ</a>
-                    </li>
-                    <li className="hover:bg-purple-600 py-2 px-4">
-                      <a href="#">Lịch thi đấu</a>
-                    </li>
-                    <li className="hover:bg-purple-600 py-2 px-4">
-                      <a href="#">Kết quả</a>
-                    </li>
-                    <li className="hover:bg-purple-600 py-2 px-4">
-                      <a href="#">Bảng xếp hạng</a>
-                    </li>
-                    <li className="hover:bg-purple-600 py-2 px-4">
-                      <a href="#">Thống kê</a>
-                    </li>
-                  </ul>
+                  {navItem.childen ? (
+                    <div>
+                      <div className="block px-6 text-white font-bold align-middle">
+                        {navItem.title}
+                        <CaretDownOutlined className="ml-4 text-[10px]" />
+                      </div>
+                      <ul className="absolute top-16 hidden group-hover:block w-56 bg-purple-700 text-white shadow-lg">
+                        {navItem.childen.map((item) => (
+                          <li>
+                            <NavLink
+                              className={({ isActive }) =>
+                                isActive
+                                  ? "block hover:bg-purple-600 py-2 px-4 text-orange-500"
+                                  : "block hover:bg-purple-600 py-2 px-4"
+                              }
+                              to={item.path}
+                            >
+                              {item.title}
+                            </NavLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <NavLink
+                      className={({ isActive }) =>
+                        isActive
+                          ? "block px-6 text-orange-500 font-bold align-middle"
+                          : "block px-6 text-white font-bold align-middle"
+                      }
+                      to={navItem.path + ""}
+                    >
+                      {navItem.title}
+                    </NavLink>
+                  )}
                 </li>
               ))}
             </ul>
@@ -217,18 +234,25 @@ function Navbar() {
             </div>
           </div>
         </div>
-        <ul className="hidden md:flex container m-auto space-x-4 mx-auto ">
-          {listTab.map((navItem, index) => (
-            <li key={index}>
-              <NavLink
-                className="block py-4 px-6 text-gray-700 font-medium text-sm hover:text-blue-500 "
-                to={navItem.path}
-              >
-                {navItem.title}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+        {/* Sub tab */}
+        {subTab && (
+          <ul className="hidden md:flex container m-auto space-x-4 mx-auto ">
+            {subTab.map((navItem, index) => (
+              <li key={index}>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive
+                      ? "block py-4 px-6 text-blue-700 font-medium text-sm hover:text-blue-500 "
+                      : "block py-4 px-6 text-gray-700 font-medium text-sm hover:text-blue-500 "
+                  }
+                  to={navItem.path}
+                >
+                  {navItem.title}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       {isOpenNavbar && (
         <div className="fixed top-16 right-0 left-0 bottom-0">
