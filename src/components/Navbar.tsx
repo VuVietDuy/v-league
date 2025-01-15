@@ -80,7 +80,7 @@ function Navbar() {
   const [showClubs, setShowClubs] = useState(true);
   const [isOpenNavbar, setIsOpenNavbar] = useState(false);
   const location = useLocation();
-  const tournament = location.pathname.split("/")[2];
+  const tournament = location.pathname.split("/")[1];
 
   const listTabTop = [
     {
@@ -91,41 +91,35 @@ function Navbar() {
       path: "vleague-1",
       title: "Vô địch quốc gia",
       childen: [
-        { path: "/fixtures/vleague-1", title: "Lịch thi đấu" },
-        { path: "/results/vleague-1", title: "Kết quả" },
-        { path: "/tables/vleague-1", title: "Bảng xếp hạng" },
-        { path: "/clubs/vleague-1", title: "Câu lạc bộ" },
+        { path: "/vleague-1/fixtures", title: "Lịch thi đấu" },
+        { path: "/vleague-1/results", title: "Kết quả" },
+        { path: "/vleague-1/tables", title: "Bảng xếp hạng" },
+        { path: "/vleague-1/clubs", title: "Câu lạc bộ" },
+        { path: "/vleague-1/category", title: "Điều lệ" },
       ],
     },
     {
       path: "vleague-2",
       title: "Hạng nhất quốc gia",
       childen: [
-        { path: "/fixtures/vleague-2", title: "Lịch thi đấu" },
-        { path: "/results/vleague-2", title: "Kết quả" },
-        { path: "/tables/vleague-2", title: "Bảng thi đấu" },
-        { path: "/clubs/vleague-2", title: "Câu lạc bộ" },
+        { path: "/vleague-2/fixtures", title: "Lịch thi đấu" },
+        { path: "/vleague-2/results", title: "Kết quả" },
+        { path: "/vleague-2/tables", title: "Bảng xếp hạng" },
+        { path: "/vleague-2/clubs", title: "Câu lạc bộ" },
+        { path: "/vleague-2/category", title: "Điều lệ" },
       ],
     },
     {
       path: "national-cup",
       title: "Cúp quốc gia",
       childen: [
-        { path: "/fixtures/national-cup", title: "Lịch thi đấu" },
-        { path: "/results/national-cup", title: "Kết quả" },
-        { path: "/tables/national-cup", title: "Bảng thi đấu" },
-        { path: "/clubs/national-cup", title: "Câu lạc bộ" },
+        { path: "/national-cup/fixtures", title: "Lịch thi đấu" },
+        { path: "/national-cup/results", title: "Kết quả" },
+        { path: "/national-cup/tables", title: "Bảng xếp hạng" },
+        { path: "/national-cup/clubs", title: "Câu lạc bộ" },
+        { path: "/national-cup/category", title: "Điều lệ" },
       ],
     },
-    { path: "/playoff", title: "Play-off" },
-    { path: "/news", title: "Tin tức" },
-  ];
-
-  const listTab = [
-    { path: "/", title: "Trang chủ" },
-    { path: "/results", title: "Kết quả" },
-    { path: "/tables", title: "Bảng thi đấu" },
-    { path: "/clubs", title: "Câu lạc bộ" },
     { path: "/news", title: "Tin tức" },
   ];
 

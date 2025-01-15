@@ -3,6 +3,7 @@ import { IClub } from "../types/club";
 import ClubCard from "../components/ClubCard";
 import { useParams } from "react-router-dom";
 import fetcher from "../api/fetcher";
+import HeaderPage from "../components/HeaderPage";
 
 function Clubs() {
   const { tournamentId } = useParams();
@@ -17,11 +18,14 @@ function Clubs() {
   }, [tournamentId]);
 
   return (
-    <div className="container m-auto mb-32">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 xl:px-6">
-        {clubs.map((club, index) => (
-          <ClubCard club={club} />
-        ))}
+    <div>
+      <HeaderPage title="Các câu lạc bộ" />
+      <div className="container m-auto mb-32 mt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 xl:px-6">
+          {clubs.map((club, index) => (
+            <ClubCard club={club} />
+          ))}
+        </div>
       </div>
     </div>
   );

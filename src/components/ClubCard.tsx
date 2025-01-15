@@ -9,10 +9,14 @@ interface IProps {
 function ClubCard(props: IProps) {
   const { club } = props;
   return (
-    <a href="/clubs/1" className="block border rounded-md relative">
+    <a
+      href={`/clubs/${club.id}`}
+      className="block border rounded-md relative group"
+    >
       <div className="absolute top-0 bottom-0">
         <PatternZigzag />
       </div>
+      <div className="absolute top-0 right-0 left-0 bottom-0 group-hover:bg-blue-500 opacity-10"></div>
       <div className="relative p-2">
         <div className="h-20 overflow-hidden">
           <img src={club.logoURL} className="h-full" alt="" />

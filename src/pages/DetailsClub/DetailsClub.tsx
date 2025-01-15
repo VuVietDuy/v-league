@@ -1,26 +1,32 @@
-import React from "react";
-import { Link, Route, Routes, useLocation } from "react-router-dom";
-import Overview from "./DetailsClub/Overview";
-import Squad from "./DetailsClub/Squad";
-import Fixtures from "./DetailsClub/Fixtures";
-import Stadium from "./DetailsClub/Stadium";
-import Stats from "./DetailsClub/Stats";
+import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
+import Overview from "./Overview";
+import Squad from "./Squad";
+import Fixtures from "./Fixtures";
+import Stadium from "./Stadium";
+import Stats from "./Stats";
+import { useEffect, useState } from "react";
+import fetcher from "../../api/fetcher";
+import { IClub } from "../../types/club";
 
 function DetailsClub() {
-  const location = useLocation(); // Get the current location
+  const { clubId } = useParams();
+  const [clubData, setClubData] = useState<IClub>();
 
-  // Define the base URL for your tabs
-  const basePath = "/clubs/1";
+  useEffect(() => {
+    fetcher.get(`/clubs/${clubId}`).then((res) => {
+      setClubData(res.data.data);
+    });
+  }, []);
 
   return (
-    <div className="h-[2000px]">
-      <div className="container m-auto mb-8">
+    <div>
+      <div className="container m-auto my-8">
         <div className="flex items-center mb-8">
-          <img src="/images/ha-tinh.png" className="h-32 mr-6" alt="" />
+          <img src={clubData?.logoURL} className="h-32 mr-6" alt="" />
           <div>
-            <h2 className="font-bold text-4xl">Ha Tinh FC</h2>
+            <h2 className="font-bold text-4xl">{clubData?.name}</h2>
             <div>
-              <span>SVĐ Thanh Hóa </span>
+              <span>{clubData?.stadium}</span>
             </div>
           </div>
         </div>
@@ -28,9 +34,9 @@ function DetailsClub() {
           <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
             <li className="me-2">
               <Link
-                to={`${basePath}`}
+                to={`/clubs/${clubId}`}
                 className={`inline-block p-4 rounded-t-lg ${
-                  location.pathname === `${basePath}`
+                  location.pathname === `/clubs/${clubId}`
                     ? "text-blue-600 bg-gray-100"
                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
                 }`}
@@ -40,9 +46,9 @@ function DetailsClub() {
             </li>
             <li className="me-2">
               <Link
-                to={`${basePath}/squad`}
+                to={`/clubs/${clubId}/squad`}
                 className={`inline-block p-4 rounded-t-lg ${
-                  location.pathname === `${basePath}/squad`
+                  location.pathname === `/clubs/${clubId}/squad`
                     ? "text-blue-600 bg-gray-100"
                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
                 }`}
@@ -52,9 +58,9 @@ function DetailsClub() {
             </li>
             <li className="me-2">
               <Link
-                to={`${basePath}/fixtures`}
+                to={`/clubs/${clubId}/fixtures`}
                 className={`inline-block p-4 rounded-t-lg ${
-                  location.pathname === `${basePath}/fixtures`
+                  location.pathname === `/clubs/${clubId}/fixtures`
                     ? "text-blue-600 bg-gray-100"
                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
                 }`}
@@ -64,9 +70,9 @@ function DetailsClub() {
             </li>
             <li className="me-2">
               <Link
-                to={`${basePath}/stadium`}
+                to={`/clubs/${clubId}/stadium`}
                 className={`inline-block p-4 rounded-t-lg ${
-                  location.pathname === `${basePath}/stadium`
+                  location.pathname === `/clubs/${clubId}/stadium`
                     ? "text-blue-600 bg-gray-100"
                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
                 }`}
@@ -76,9 +82,9 @@ function DetailsClub() {
             </li>
             <li className="me-2">
               <Link
-                to={`${basePath}/stats`}
+                to={`/clubs/${clubId}/stats`}
                 className={`inline-block p-4 rounded-t-lg ${
-                  location.pathname === `${basePath}/stats`
+                  location.pathname === `/clubs/${clubId}/stats`
                     ? "text-blue-600 bg-gray-100"
                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
                 }`}

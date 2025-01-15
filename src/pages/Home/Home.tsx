@@ -1,9 +1,8 @@
 import { ArrowRightOutlined, FileTextOutlined } from "@ant-design/icons";
-import binhDinh from "../assets/binh-dinh.png";
-import LatestNews from "../components/LatestNews";
-import MatchFixture from "../components/MatchFixture";
-import NewsCard from "../components/NewsCard";
-import { vLeagueTable } from "./Tables";
+import binhDinh from "../../assets/binh-dinh.png";
+import LatestNews from "../../components/LatestNews";
+import MatchFixture from "../../components/MatchFixture";
+import NewsCard from "../../components/NewsCard";
 
 function Home() {
   return (
@@ -61,7 +60,7 @@ function Home() {
                 </tr>
               </thead>
               <tbody>
-                {vLeagueTable.map((item, index) => (
+                {/* {vLeagueTable?.map((item, index) => (
                   <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 border-b dark:border-gray-700">
                     <td className="px-2 py-1">{item.position}</td>
                     <td className="px-2 py-1 flex items-center gap-2">
@@ -72,7 +71,7 @@ function Home() {
                     <td className="px-2 py-1">{item.GF - item.GA}</td>
                     <td className="px-2 py-1 font-bold text-red-600">5</td>
                   </tr>
-                ))}
+                ))} */}
               </tbody>
             </table>
             <div className="p-2">
@@ -90,7 +89,7 @@ function Home() {
                 news={{
                   title:
                     "Thông báo: ban hành Lịch thi đấu Vòng 1/8 – Giải bóng đá...",
-                  imgUrl: "/images/news.jpg",
+                  thumbnail: "/images/news.jpg",
                   tag: "Thông báo",
                 }}
               />
@@ -100,7 +99,7 @@ function Home() {
                 news={{
                   title:
                     "Thông báo: ban hành Lịch thi đấu Vòng 1/8 – Giải bóng đá...",
-                  imgUrl: "/images/news.jpg",
+                  thumbnail: "/images/news.jpg",
                   tag: "Thông báo",
                 }}
               />
@@ -108,7 +107,7 @@ function Home() {
                 news={{
                   title:
                     "Thông báo: ban hành Lịch thi đấu Vòng 1/8 – Giải bóng đá...",
-                  imgUrl: "/images/news.jpg",
+                  thumbnail: "/images/news.jpg",
                   tag: "Thông báo",
                 }}
               />
