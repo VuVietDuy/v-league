@@ -1,4 +1,5 @@
 import axios from "axios";
+import { store } from "../store/store";
 
 const backendUrl = "http://localhost:8000/api/v1";
 
@@ -8,8 +9,9 @@ const fetcher = axios.create({
 
 fetcher.interceptors.request.use(
   function (config) {
-    if (localStorage.getItem("token"))
-      config.headers.token = localStorage.getItem("token");
+    const state = store.getState();
+    const accessToken = state?.token.accessToken;
+    if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
     return config;
   },
   function (error) {

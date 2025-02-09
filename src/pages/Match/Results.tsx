@@ -6,13 +6,13 @@ import {
 } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 
-import { IMatch } from "../types/match";
-import fetcher from "../api/fetcher";
-import { formatDate } from "../utils/formatDate";
-import StadiumIcon from "../components/icons/StadiumIcon";
-import HeaderPage from "../components/HeaderPage";
+import { IMatch } from "@/types/match";
+import fetcher from "@/api/fetcher";
+import { formatDate } from "@/utils/formatDate";
+import StadiumIcon from "@/components/icons/StadiumIcon";
+import HeaderPage from "@/components/HeaderPage";
 import { Dropdown, MenuProps } from "antd";
-import { IClub } from "../types/club";
+import { IClub } from "@/types/club";
 
 interface Fixtures {
   [key: string]: IMatch[];
@@ -21,32 +21,43 @@ interface Fixtures {
 function Results() {
   const { tournamentId } = useParams();
   const [itemsClubFilter, setItemsClubFilter] = useState<MenuProps["items"]>();
-
   const [fixtures, setFixtures] = useState<Fixtures>({});
+
   useEffect(() => {
-    fetcher.get(`tournaments/${tournamentId}/results`).then((res) => {
-      const matchesData: IMatch[] = res.data;
-      const newFixtures: Fixtures = {};
-      matchesData.map((match) => {
-        const formattedDate = formatDate(
-          new Date(match.date).toISOString().split("T")[0]
-        );
+    let params = {
+      status: "COMPLETED",
+    };
+    fetcher
+      .get(`tournaments/${tournamentId}/results`, { params: params })
+      .then((res) => {
+        console.log(res);
+        const matchesData: IMatch[] = res.data;
+        const newFixtures: Fixtures = {};
+        matchesData.map((match) => {
+          const formattedDate = formatDate(
+            new Date(match.date).toISOString().split("T")[0]
+          );
 
-        if (newFixtures[formattedDate]) {
-          newFixtures[formattedDate].push(match);
-        } else {
-          newFixtures[formattedDate] = [match];
-        }
+          if (newFixtures[formattedDate]) {
+            newFixtures[formattedDate].push(match);
+          } else {
+            newFixtures[formattedDate] = [match];
+          }
+        });
+        setFixtures(newFixtures);
       });
-      setFixtures(newFixtures);
-    });
+  }, [tournamentId]);
 
+  useEffect(() => {
     fetcher.get(`tournaments/${tournamentId}/clubs`).then((res) => {
       const clubsData: IClub[] = res.data;
       const items = clubsData.map((club, index) => ({
         key: index,
         label: (
-          <a className="hover:text-purple-800 text-wrap w-28" href="">
+          <a
+            className="hover:text-purple-800 text-wrap w-28"
+            href={`?clubId=${club.id}`}
+          >
             {club.name}
           </a>
         ),
@@ -134,11 +145,11 @@ function Results() {
                   </div>
                   <div className="flex items-center px-2 rounded bg-purple-950">
                     <span className="text-sm font-bold text-white">
-                      {match.homeScore}
+                      {match.homeScore || 0}
                     </span>
                     <span className="text-sm font-bold text-white px-1">-</span>
                     <span className="text-sm font-bold text-white">
-                      {match.awayScore}
+                      {match.awayScore || 0}
                     </span>
                   </div>
                   <div className="w-[50%] flex items-center gap-2">

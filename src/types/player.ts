@@ -7,4 +7,5 @@ export interface IPlayer {
   height: number;
   position: string;
   clubId: string;
+  shirtNumber: number;
 }

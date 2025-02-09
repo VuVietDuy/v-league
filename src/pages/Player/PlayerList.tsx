@@ -1,6 +1,6 @@
 import React from "react";
 
-function Players() {
+function PlayerList() {
   return (
     <div className="">
       <div className="container m-auto">
@@ -37,4 +37,4 @@ function Players() {
   );
 }
 
-export default Players;
+export default PlayerList;

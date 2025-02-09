@@ -3,8 +3,8 @@ import { IEvent } from "./event";
 
 export interface IMatch {
   id?: number;
-  homeClub?: IClub;
-  awayClub?: IClub;
+  homeClub: IClub;
+  awayClub: IClub;
   homeScore?: number;
   awayScore?: number;
   stadium?: string;

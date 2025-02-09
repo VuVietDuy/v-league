@@ -1,17 +1,15 @@
 import { ArrowRightOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IMatch } from "../../types/match";
-import { MenuProps } from "antd";
-import fetcher from "../../api/fetcher";
-import { formatDate } from "../../utils/formatDate";
-import { IClub } from "../../types/club";
-import StadiumIcon from "../../components/icons/StadiumIcon";
+import { IMatch } from "@/types/match";
+import fetcher from "@/api/fetcher";
+import { formatDate } from "@/utils/formatDate";
+import StadiumIcon from "@/components/icons/StadiumIcon";
 
 interface Fixtures {
   [key: string]: IMatch[];
 }
-function Fixtures() {
+function ClubFixtures() {
   const { clubId } = useParams();
   const [fixtures, setFixtures] = useState<Fixtures>({});
 
@@ -85,4 +83,4 @@ function Fixtures() {
   );
 }
 
-export default Fixtures;
+export default ClubFixtures;

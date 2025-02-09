@@ -1,6 +1,8 @@
+import { NavLink } from "react-router-dom";
+
 function Login() {
   return (
-    <div>
+    <div className="mt-8">
       <div className="container m-auto flex mb-80">
         <div className="w-[500px] m-auto">
           <form action="">
@@ -29,6 +31,12 @@ function Login() {
               </div>
             </div>
           </form>
+          <p className="text-center mt-4">
+            Bạn chưa có tài khoản?{" "}
+            <NavLink className={"text-blue-600"} to="/register">
+              Đăng ký
+            </NavLink>
+          </p>
         </div>
       </div>
     </div>

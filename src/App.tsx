@@ -1,41 +1,55 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Players from "./pages/Players";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Results from "./pages/Results";
-import Tables from "./pages/Tables";
-import Clubs from "./pages/Clubs";
-import Home from "./pages/Home/Home";
-import News from "./pages/News";
-import Login from "./pages/Login";
-import Fixtures from "./pages/Fixtures";
-import NewsDetails from "./pages/NewsDetails";
-import DetailsClub from "./pages/DetailsClub/DetailsClub";
-import MatchDetails from "./pages/MatchDetails/MatchDetails";
+import { Provider } from "react-redux";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import Home from "@/pages/Home/Home";
+import MatchDetails from "@/pages/Match/MatchDetails/MatchDetails";
+import PlayerList from "@/pages/Player/PlayerList";
+import PlayerDetail from "@/pages/Player/PlayerDetail";
+import Register from "@/pages/Auth/Register";
+import Login from "@/pages/Auth/Login";
+import Fixtures from "@/pages/Match/Fixtures";
+import Tables from "@/pages/Tables/Tables";
+import ClubList from "@/pages/Club/ClubList";
+import NewsList from "@/pages/News/NewsList";
+import NewsDetail from "@/pages/News/NewsDetail";
+import ClubDetail from "@/pages/Club/ClubDetail/ClubDetail";
+import Results from "@/pages/Match/Results";
+import Category from "@/pages/Category/Category";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { store } from "@/store/store";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="font-montserrat">
-        <Navbar />
-        <div>
-          <Routes>
-            <Route path="" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/:tournamentId/fixtures/" element={<Fixtures />} />
-            <Route path="/:tournamentId/results/" element={<Results />} />
-            <Route path="/:tournamentId/tables/" element={<Tables />} />
-            <Route path="/:tournamentId/clubs/" element={<Clubs />} />
-            <Route path="/clubs/:clubId/*" element={<DetailsClub />} />
-            <Route path="/players" element={<Players />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/news/:newsId" element={<NewsDetails />} />
-            <Route path="/match/:matchId" element={<MatchDetails />} />
-          </Routes>
-        </div>
-        <Footer />
-      </div>
-    </BrowserRouter>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <div className="font-montserrat">
+            <Navbar />
+            <Routes>
+              <Route path="" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/:tournamentId/fixtures/" element={<Fixtures />} />
+              <Route path="/:tournamentId/results/" element={<Results />} />
+              <Route path="/:tournamentId/tables/" element={<Tables />} />
+              <Route path="/:tournamentId/clubs/" element={<ClubList />} />
+              <Route path="/clubs/:clubId/*" element={<ClubDetail />} />
+              <Route path="/players" element={<PlayerList />} />
+              <Route path="/players/:playerId" element={<PlayerDetail />} />
+              <Route path="/news" element={<NewsList />} />
+              <Route path="/news/:newsId" element={<NewsDetail />} />
+              <Route path="/match/:matchId/*" element={<MatchDetails />} />
+              <Route path="/:tournamentId/category" element={<Category />} />
+            </Routes>
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </Provider>
   );
 }
 

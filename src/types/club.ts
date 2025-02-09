@@ -1,3 +1,5 @@
+import { IPlayer } from "./player";
+
 export interface IClub {
   id: number;
   name: string;
@@ -7,4 +9,5 @@ export interface IClub {
   logoURL: string;
   stadiumDescription: string;
   foundedYear: string;
+  players: IPlayer[];
 }

@@ -1,14 +1,14 @@
 import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
-import Overview from "./Overview";
-import Squad from "./Squad";
-import Fixtures from "./Fixtures";
-import Stadium from "./Stadium";
-import Stats from "./Stats";
+import ClubOverview from "./ClubOverview";
+import ClubSquad from "./ClubSquad";
+import ClubFixtures from "./ClubFixtures";
+import ClubStadium from "./ClubStadium";
+import ClubStats from "./ClubStats";
 import { useEffect, useState } from "react";
-import fetcher from "../../api/fetcher";
-import { IClub } from "../../types/club";
+import fetcher from "@/api/fetcher";
+import { IClub } from "@/types/club";
 
-function DetailsClub() {
+function ClubDetail() {
   const { clubId } = useParams();
   const [clubData, setClubData] = useState<IClub>();
 
@@ -97,15 +97,15 @@ function DetailsClub() {
       </div>
       <div>
         <Routes>
-          <Route path="" element={<Overview />} />
-          <Route path="squad" element={<Squad />} />
-          <Route path="fixtures" element={<Fixtures />} />
-          <Route path="stadium" element={<Stadium />} />
-          <Route path="stats" element={<Stats />} />
+          <Route path="" element={<ClubOverview />} />
+          <Route path="squad" element={<ClubSquad />} />
+          <Route path="fixtures" element={<ClubFixtures />} />
+          <Route path="stadium" element={<ClubStadium />} />
+          <Route path="stats" element={<ClubStats />} />
         </Routes>
       </div>
     </div>
   );
 }
 
-export default DetailsClub;
+export default ClubDetail;

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import PlayerCard from "../../components/PlayerCard";
-import fetcher from "../../api/fetcher";
+import PlayerCard from "@/components/PlayerCard";
+import fetcher from "@/api/fetcher";
 import { useParams } from "react-router-dom";
-import { IPlayer } from "../../types/player";
+import { IPlayer } from "@/types/player";
 
-function Squad() {
+function ClubSquad() {
   const [players, setPlayers] = useState<IPlayer[]>([]);
   const { clubId } = useParams();
   console.log(clubId);
@@ -26,4 +26,4 @@ function Squad() {
   );
 }
 
-export default Squad;
+export default ClubSquad;

@@ -1,43 +1,109 @@
+import { useEffect, useState } from "react";
+import { NavLink, useParams } from "react-router-dom";
 import { ArrowRightOutlined, FileTextOutlined } from "@ant-design/icons";
-import binhDinh from "../../assets/binh-dinh.png";
-import LatestNews from "../../components/LatestNews";
-import MatchFixture from "../../components/MatchFixture";
-import NewsCard from "../../components/NewsCard";
 
+import LatestNews from "@/components/LatestNews";
+import MatchFixture from "@/components/MatchFixture";
+import NewsCard from "@/components/NewsCard";
+import { IClub } from "@/types/club";
+import fetcher from "@/api/fetcher";
+import { IMatch } from "@/types/match";
+import { formatDate } from "@/utils/formatDate";
+import { useQuery } from "@tanstack/react-query";
+
+interface TablesItem {
+  position?: number;
+  club: IClub;
+  played?: number;
+  won?: number;
+  drawn?: number;
+  lost?: number;
+  goalsFor?: number;
+  goalsAgainst?: number;
+  goalDifference: number;
+  points: number;
+}
+interface Fixtures {
+  [key: string]: IMatch[];
+}
 function Home() {
+  const [tables, setTables] = useState<TablesItem[]>([]);
+  const [fixtures, setFixtures] = useState<Fixtures>({});
+  const { data: listNews } = useQuery({
+    queryKey: ["GET_LIST_NEWS"],
+    queryFn: () =>
+      fetcher.get("news").then((res) => {
+        return res.data;
+      }),
+  });
+
+  useEffect(() => {
+    fetcher.get(`tournaments/vleague-1/fixtures`).then((res) => {
+      let matchesData: IMatch[] = res.data;
+      matchesData = matchesData.slice(0, 7);
+
+      const newFixtures: Fixtures = {};
+      matchesData.map((match) => {
+        const formattedDate = formatDate(
+          new Date(match.date).toISOString().split("T")[0]
+        );
+
+        if (newFixtures[formattedDate]) {
+          newFixtures[formattedDate].push(match);
+        } else {
+          newFixtures[formattedDate] = [match];
+        }
+      });
+      setFixtures(newFixtures);
+    });
+  }, []);
+
+  useEffect(() => {
+    fetcher.get(`tournaments/vleague-1/tables`).then((res) => {
+      console.log(res);
+      setTables(res.data);
+    });
+  }, []);
+
   return (
-    <div className="h-[2000px]">
+    <div className=" mt-8">
       <div className="flex container m-auto">
         <div className="min-w-[326px] ">
           <div className="rounded-xl overflow-hidden border">
             <div className="py-4 bg-blue-500">
-              <p className="text-center font-bold text-xl">Trận đấu tuần này</p>
+              <p className="text-center font-bold text-xl  text-white">
+                Trận đấu tuần này
+              </p>
             </div>
-            <div className="mb-2">
-              <time className="block text-purple-950 font-medium text-center">
-                Saturday 9 November
-              </time>
-            </div>
+
             <div>
-              <MatchFixture />
-              <MatchFixture />
-              <MatchFixture />
-              <MatchFixture />
-              <MatchFixture />
-              <MatchFixture />
-              <MatchFixture />
-              <MatchFixture />
+              {Object.entries(fixtures).map(([key, matchesOnDate]) => (
+                <div>
+                  <div className="mb-2 mt-2">
+                    <time className="text-xl block text-purple-950 font-medium text-center">
+                      {key}
+                    </time>
+                  </div>
+                  {matchesOnDate.map((match) => (
+                    <>
+                      <MatchFixture match={match} />
+                    </>
+                  ))}
+                </div>
+              ))}
             </div>
             <div className="p-2">
-              <button className="global-button">
+              <NavLink to={"/vleague-1/fixtures"} className="global-button">
                 Xem thêm
                 <ArrowRightOutlined />
-              </button>
+              </NavLink>
             </div>
           </div>
           <div className="rounded-xl overflow-hidden border mt-4">
             <div className="py-4 bg-blue-500">
-              <p className="text-center font-bold text-xl">Bảng xếp hạng</p>
+              <p className="text-center font-bold text-xl  text-white">
+                Bảng xếp hạng
+              </p>
             </div>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-500">
               <thead className="text-[12px] text-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b">
@@ -60,76 +126,67 @@ function Home() {
                 </tr>
               </thead>
               <tbody>
-                {/* {vLeagueTable?.map((item, index) => (
+                {tables?.map((item, index) => (
                   <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 border-b dark:border-gray-700">
                     <td className="px-2 py-1">{item.position}</td>
                     <td className="px-2 py-1 flex items-center gap-2">
-                      <img className="w-8 h-8" src={binhDinh} alt="" />
-                      <span className="font-semibold">Binh Dinh FC</span>
+                      <img className="w-8 h-8" src={item.club.logoURL} alt="" />
+                      <span className="font-semibold">
+                        {item.club.shortName}
+                      </span>
                     </td>
-                    <td className="px-2 py-1">{item.GA}</td>
-                    <td className="px-2 py-1">{item.GF - item.GA}</td>
-                    <td className="px-2 py-1 font-bold text-red-600">5</td>
+                    <td className="px-2 py-1">{item.goalsFor}</td>
+                    <td className="px-2 py-1">{item.goalDifference}</td>
+                    <td className="px-2 py-1 font-bold text-red-600">
+                      {item.points}
+                    </td>
                   </tr>
-                ))} */}
+                ))}
               </tbody>
             </table>
             <div className="p-2">
-              <button className="global-button">
+              <NavLink to={"/vleague-1/tables"} className="global-button">
                 Xem thêm
                 <ArrowRightOutlined />
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>
-        <div className="grow pl-6">
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            <div className="col-span-2">
-              <NewsCard
-                news={{
-                  title:
-                    "Thông báo: ban hành Lịch thi đấu Vòng 1/8 – Giải bóng đá...",
-                  thumbnail: "/images/news.jpg",
-                  tag: "Thông báo",
-                }}
-              />
+        {listNews && (
+          <div className="grow pl-6">
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              <div className="col-span-2">
+                <NewsCard news={listNews[0]} />
+              </div>
+              <div className="col-span-1">
+                <NewsCard news={listNews[1]} />
+                <NewsCard news={listNews[2]} />
+              </div>
             </div>
-            <div className="col-span-1">
-              <NewsCard
-                news={{
-                  title:
-                    "Thông báo: ban hành Lịch thi đấu Vòng 1/8 – Giải bóng đá...",
-                  thumbnail: "/images/news.jpg",
-                  tag: "Thông báo",
-                }}
-              />
-              <NewsCard
-                news={{
-                  title:
-                    "Thông báo: ban hành Lịch thi đấu Vòng 1/8 – Giải bóng đá...",
-                  thumbnail: "/images/news.jpg",
-                  tag: "Thông báo",
-                }}
-              />
+            <hr />
+            <div className="grid grid-cols-3 p-3 mb-6">
+              <div>
+                <FileTextOutlined className="mr-2" />
+                <span className="text-xs">
+                  Hoàn thành đào tạo Trọng tài VAR
+                </span>
+              </div>
+              <div>
+                <FileTextOutlined className="mr-2" />
+                <span className="text-xs">
+                  Hoàn thành đào tạo Trọng tài VAR
+                </span>
+              </div>
+              <div>
+                <FileTextOutlined className="mr-2" />
+                <span className="text-xs">
+                  Hoàn thành đào tạo Trọng tài VAR
+                </span>
+              </div>
             </div>
+            <LatestNews latestNews={listNews.slice(3, 40)} />
           </div>
-          <hr />
-          <div className="grid grid-cols-3 p-3 mb-6">
-            <div>
-              <FileTextOutlined className="mr-2" />
-              <span className="text-xs">Hoàn thành đào tạo Trọng tài VAR</span>
-            </div>
-            <div>
-              <FileTextOutlined className="mr-2" />
-              <span className="text-xs">Hoàn thành đào tạo Trọng tài VAR</span>
-            </div>
-            <div>
-              <FileTextOutlined className="mr-2" />
-              <span className="text-xs">Hoàn thành đào tạo Trọng tài VAR</span>
-            </div>
-          </div>
-          <LatestNews />
-        </div>
+        )}
       </div>
     </div>
   );

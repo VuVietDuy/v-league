@@ -17,6 +17,8 @@ import {
   MenuOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const listClubs = [
   {
@@ -76,52 +78,42 @@ const listClubs = [
   },
 ];
 
+const listTabTop = [
+  {
+    path: "/",
+    title: "Trang chủ",
+  },
+  {
+    path: "vleague-1",
+    title: "Vô địch quốc gia",
+    childen: [
+      { path: "/vleague-1/fixtures", title: "Lịch thi đấu" },
+      { path: "/vleague-1/results", title: "Kết quả" },
+      { path: "/vleague-1/tables", title: "Bảng xếp hạng" },
+      { path: "/vleague-1/clubs", title: "Câu lạc bộ" },
+      { path: "/vleague-1/category", title: "Điều lệ" },
+    ],
+  },
+  {
+    path: "vleague-2",
+    title: "Hạng nhất quốc gia",
+    childen: [
+      { path: "/vleague-2/fixtures", title: "Lịch thi đấu" },
+      { path: "/vleague-2/results", title: "Kết quả" },
+      { path: "/vleague-2/tables", title: "Bảng xếp hạng" },
+      { path: "/vleague-2/clubs", title: "Câu lạc bộ" },
+      { path: "/vleague-2/category", title: "Điều lệ" },
+    ],
+  },
+  { path: "/news", title: "Tin tức" },
+];
+
 function Navbar() {
   const [showClubs, setShowClubs] = useState(true);
   const [isOpenNavbar, setIsOpenNavbar] = useState(false);
   const location = useLocation();
   const tournament = location.pathname.split("/")[1];
-
-  const listTabTop = [
-    {
-      path: "/",
-      title: "Trang chủ",
-    },
-    {
-      path: "vleague-1",
-      title: "Vô địch quốc gia",
-      childen: [
-        { path: "/vleague-1/fixtures", title: "Lịch thi đấu" },
-        { path: "/vleague-1/results", title: "Kết quả" },
-        { path: "/vleague-1/tables", title: "Bảng xếp hạng" },
-        { path: "/vleague-1/clubs", title: "Câu lạc bộ" },
-        { path: "/vleague-1/category", title: "Điều lệ" },
-      ],
-    },
-    {
-      path: "vleague-2",
-      title: "Hạng nhất quốc gia",
-      childen: [
-        { path: "/vleague-2/fixtures", title: "Lịch thi đấu" },
-        { path: "/vleague-2/results", title: "Kết quả" },
-        { path: "/vleague-2/tables", title: "Bảng xếp hạng" },
-        { path: "/vleague-2/clubs", title: "Câu lạc bộ" },
-        { path: "/vleague-2/category", title: "Điều lệ" },
-      ],
-    },
-    {
-      path: "national-cup",
-      title: "Cúp quốc gia",
-      childen: [
-        { path: "/national-cup/fixtures", title: "Lịch thi đấu" },
-        { path: "/national-cup/results", title: "Kết quả" },
-        { path: "/national-cup/tables", title: "Bảng xếp hạng" },
-        { path: "/national-cup/clubs", title: "Câu lạc bộ" },
-        { path: "/national-cup/category", title: "Điều lệ" },
-      ],
-    },
-    { path: "/news", title: "Tin tức" },
-  ];
+  const user = useSelector((state: RootState) => state.user);
 
   const subTab = listTabTop.find((item) => item.path === tournament)?.childen;
 
@@ -172,8 +164,8 @@ function Navbar() {
                         <CaretDownOutlined className="ml-4 text-[10px]" />
                       </div>
                       <ul className="absolute top-16 hidden group-hover:block w-56 bg-purple-700 text-white shadow-lg">
-                        {navItem.childen.map((item) => (
-                          <li>
+                        {navItem.childen.map((item, index) => (
+                          <li key={index}>
                             <NavLink
                               className={({ isActive }) =>
                                 isActive
@@ -204,9 +196,13 @@ function Navbar() {
               ))}
             </ul>
             <div className="h-full flex items-center p-2 gap-3">
-              <a href="/login" className="py-2 px-3 border bg-white rounded">
-                Đăng nhập
-              </a>
+              {user.id ? (
+                <p className="text-white font-bold">{user.name}</p>
+              ) : (
+                <a href="/login" className="py-2 px-3 border bg-white rounded">
+                  Đăng nhập
+                </a>
+              )}
               <button className="py-2 px-3 text-white rounded border border-primary hover:border-gray-200">
                 <SearchOutlined className="text-2xl" />
               </button>
@@ -230,18 +226,22 @@ function Navbar() {
         </div>
         {/* Sub tab */}
         {subTab && (
-          <ul className="hidden md:flex container m-auto space-x-4 mx-auto ">
+          <ul className="hidden md:flex container m-auto mx-auto ">
             {subTab.map((navItem, index) => (
-              <li key={index}>
-                <NavLink
-                  className={({ isActive }) =>
-                    isActive
-                      ? "block py-4 px-6 text-blue-700 font-medium text-sm hover:text-blue-500 "
-                      : "block py-4 px-6 text-gray-700 font-medium text-sm hover:text-blue-500 "
-                  }
-                  to={navItem.path}
-                >
-                  {navItem.title}
+              <li key={index} className="m-0 p-0 group">
+                <NavLink to={navItem.path} className={`text-sm font-medium `}>
+                  {({ isActive }) => (
+                    <>
+                      <span className="block py-4 px-6">{navItem.title}</span>
+                      <div
+                        className={`h-2 w-full bg-gradient-to-r ${
+                          isActive
+                            ? "from-blue-500 to-purple-600"
+                            : "group-hover:from-blue-500 group-hover:to-purple-600"
+                        }`}
+                      ></div>
+                    </>
+                  )}
                 </NavLink>
               </li>
             ))}

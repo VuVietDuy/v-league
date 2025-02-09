@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { IClub } from "../types/club";
-import ClubCard from "../components/ClubCard";
 import { useParams } from "react-router-dom";
-import fetcher from "../api/fetcher";
-import HeaderPage from "../components/HeaderPage";
+import HeaderPage from "@/components/HeaderPage";
+import { IClub } from "@/types/club";
+import fetcher from "@/api/fetcher";
+import ClubCard from "@/components/ClubCard";
 
-function Clubs() {
+function ClubList() {
   const { tournamentId } = useParams();
   console.log(tournamentId);
   const [clubs, setClubs] = useState<IClub[]>([]);
 
   useEffect(() => {
-    fetcher.get(`seasons/${tournamentId}/clubs`).then((res: any) => {
+    fetcher.get(`tournaments/${tournamentId}/clubs`).then((res: any) => {
       console.log(res);
-      setClubs(res.data.data);
+      setClubs(res.data);
     });
   }, [tournamentId]);
 
@@ -31,4 +31,4 @@ function Clubs() {
   );
 }
 
-export default Clubs;
+export default ClubList;

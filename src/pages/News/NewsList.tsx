@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { News as INews } from "../types/news";
-import fetcher from "../api/fetcher";
-import HeaderPage from "../components/HeaderPage";
+import { News as INews } from "@/types/news";
+import fetcher from "@/api/fetcher";
+import HeaderPage from "@/components/HeaderPage";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
-function News() {
-  const [newsData, setNewsData] = useState<INews[]>([]);
-  useEffect(() => {
-    fetcher.get("news").then((res) => {
-      console.log(res);
-      setNewsData(res.data);
-    });
-  }, []);
+function NewsList() {
+  const { data: newsData, isLoading } = useQuery({
+    queryKey: ["GET_LIST_NEWS"],
+    queryFn: () => fetcher.get("news").then((res) => res.data),
+  });
+
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
   return (
     <div>
       <HeaderPage title={<span>Tin tức</span>} />
       <div className="container m-auto mt-10">
-        {newsData.map((news, index) => (
+        {newsData.map((news: any, index: any) => (
           <Link
             to={`/news/${news.id}`}
+            key={index}
             className="flex gap-6 mb-6 group hover:cursor-pointer"
           >
             <div className="w-[50%] h-24 md:w-80 md:h-44 rounded overflow-hidden">
@@ -36,7 +39,9 @@ function News() {
                 {news.title}
               </p>
               <div className="hidden md:block">
-                <p className="py-1 line-clamp-1">{news.content}</p>
+                <p className="py-1 line-clamp-1">
+                  <div dangerouslySetInnerHTML={{ __html: news.content }}></div>
+                </p>
               </div>
             </div>
           </Link>
@@ -46,4 +51,4 @@ function News() {
   );
 }
 
-export default News;
+export default NewsList;

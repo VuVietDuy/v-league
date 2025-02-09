@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-
-import FormItem from "../components/FormItem";
-import { FormStatus } from "../types/form";
 import { useParams } from "react-router-dom";
-import fetcher from "../api/fetcher";
-import { IClub } from "../types/club";
-import HeaderPage from "../components/HeaderPage";
+
+import FormItem from "@/components/FormItem";
+import HeaderPage from "@/components/HeaderPage";
+import { FormStatus } from "@/types/form";
+import { IClub } from "@/types/club";
+import fetcher from "@/api/fetcher";
 
 interface TablesItem {
   position?: number;
@@ -23,7 +23,6 @@ interface TablesItem {
 function Tables() {
   const [data, setData] = useState<TablesItem[]>([]);
   const { tournamentId } = useParams();
-  console.log(tournamentId);
 
   useEffect(() => {
     fetcher.get(`tournaments/${tournamentId}/tables`).then((res) => {
@@ -31,6 +30,7 @@ function Tables() {
       setData(res.data);
     });
   }, []);
+
   return (
     <div>
       <HeaderPage title="Bảng xếp hạng" />
@@ -89,7 +89,7 @@ function Tables() {
                   {index == 5 && (
                     <div className="absolute top-0 left-0 w-1 h-full bg-[#00be14]"></div>
                   )}
-                  {index + 1}
+                  {item.position}
                 </td>
                 <td className="px-6 py-2 flex items-center gap-2">
                   <img
@@ -108,11 +108,31 @@ function Tables() {
                 <td className="px-6 py-2">{item.goalDifference}</td>
                 <td className="px-6 py-2 hidden lg:block">
                   <div className="h-full flex items-center gap-2">
-                    <FormItem form={{ status: FormStatus.T }} />
-                    <FormItem form={{ status: FormStatus.T }} />
-                    <FormItem form={{ status: FormStatus.H }} />
-                    <FormItem form={{ status: FormStatus.H }} />
-                    <FormItem form={{ status: FormStatus.B }} />
+                    {index % 2 ? (
+                      <FormItem form={{ status: FormStatus.H }} />
+                    ) : (
+                      <FormItem form={{ status: FormStatus.T }} />
+                    )}
+                    {index % 3 ? (
+                      <FormItem form={{ status: FormStatus.B }} />
+                    ) : (
+                      <FormItem form={{ status: FormStatus.T }} />
+                    )}
+                    {index % 4 ? (
+                      <FormItem form={{ status: FormStatus.H }} />
+                    ) : (
+                      <FormItem form={{ status: FormStatus.T }} />
+                    )}
+                    {index % 5 ? (
+                      <FormItem form={{ status: FormStatus.B }} />
+                    ) : (
+                      <FormItem form={{ status: FormStatus.T }} />
+                    )}
+                    {index % 6 ? (
+                      <FormItem form={{ status: FormStatus.B }} />
+                    ) : (
+                      <FormItem form={{ status: FormStatus.T }} />
+                    )}
                   </div>
                 </td>
                 <td className="px-6 py-2 font-bold text-red-600">

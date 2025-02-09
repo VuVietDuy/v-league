@@ -4,14 +4,14 @@ import {
   ReloadOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import fetcher from "../api/fetcher";
-import { IMatch } from "../types/match";
+import fetcher from "@/api/fetcher";
+import { IMatch } from "@/types/match";
 import { useParams } from "react-router-dom";
-import { formatDate } from "../utils/formatDate";
-import StadiumIcon from "../components/icons/StadiumIcon";
-import HeaderPage from "../components/HeaderPage";
+import { formatDate } from "@/utils/formatDate";
+import StadiumIcon from "@/components/icons/StadiumIcon";
+import HeaderPage from "@/components/HeaderPage";
 import { Dropdown, MenuProps } from "antd";
-import { IClub } from "../types/club";
+import { IClub } from "@/types/club";
 
 interface Fixtures {
   [key: string]: IMatch[];
@@ -24,11 +24,12 @@ function Fixtures() {
 
   useEffect(() => {
     fetcher.get(`tournaments/${tournamentId}/fixtures`).then((res) => {
-      const matchesData: IMatch[] = res.data;
-      const newFixtures: Fixtures = {};
-      matchesData.map((match) => {
+      let matchesData: IMatch[] = res.data;
+      matchesData = matchesData.slice(0, 7);
+      let newFixtures: Fixtures = {};
+      matchesData.map((match, index) => {
         const formattedDate = formatDate(
-          new Date(match.date).toISOString().split("T")[0]
+          new Date(match?.date).toISOString().split("T")[0]
         );
 
         if (newFixtures[formattedDate]) {
@@ -110,11 +111,11 @@ function Fixtures() {
             <ReloadOutlined /> Xóa bộ lọc
           </a>
         </div>
-        {Object.entries(fixtures).map(([key, matchesOnDate]) => (
+        {Object.entries(fixtures).map(([key, matchesOnDate], index) => (
           <div>
+            <h3 className="text-xl font-bold mt-6">{key}</h3>
             {matchesOnDate.map((match) => (
               <>
-                <h3 className="text-xl font-bold mt-6">{key}</h3>
                 <div className="flex justify-between border-b py-2">
                   <div className="w-full lg:w-[460px] flex justify-center gap-3">
                     <div className="w-[50%] flex justify-end items-center gap-2">
