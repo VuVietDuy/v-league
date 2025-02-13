@@ -3,19 +3,27 @@ import yellowCard from "@/assets/card-yellow.svg";
 import subw from "@/assets/sub-w.svg";
 import whistle from "@/assets/whistle.svg";
 
-export function renderIconEvent(eventType: any, width: any = 3) {
+function renderIcon(eventType: any) {
   switch (eventType) {
     case "GOAL":
-      return <img src={ballSmall} className={`w-${width}`} alt="" />;
+      return <img src={ballSmall} alt="" />;
     case "YELLOW_CARD":
-      return <img src={yellowCard} className={`w-${width}`} alt="" />;
+      return <img src={yellowCard} alt="" />;
     case "SUBSTITUTION":
-      return <img src={subw} className={`w-${width}`} alt="" />;
+      return <img src={subw} alt="" />;
     case "OWN_GOAL":
-      return <img src={ballSmall} className={`w-${width}`} alt="" />;
+      return <img src={ballSmall} alt="" />;
     case "RED_CARD":
-      return <img src={subw} className={`w-${width}`} alt="" />;
+      return <img src={subw} alt="" />;
     default:
-      return <img src={whistle} className={`w-${width}`} alt="" />;
+      return <img src={whistle} alt="" />;
   }
+}
+
+export function renderIconEvent(eventType: any, width: any) {
+  return (
+    <div className={`w-${width} flex items-center`}>
+      {renderIcon(eventType)}
+    </div>
+  );
 }

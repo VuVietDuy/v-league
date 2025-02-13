@@ -20,6 +20,7 @@ export default function MatchLatest(props: IProps) {
     queryKey: ["GET_MATCH_EVENTS_LATEST"],
     queryFn: () =>
       fetcher.get(`matches/${matchId}/events`).then((res) => {
+        console.log(res.data);
         return res.data;
       }),
   });
@@ -102,8 +103,7 @@ export default function MatchLatest(props: IProps) {
                   </div>
                   <div>
                     <p className="py-3">
-                      Leif Davis (Ipswich Town) wins a free kick in the
-                      defensive half.
+                      {event.player.name} ({event.club.name}) {event?.comment}
                     </p>
                   </div>
                 </div>
