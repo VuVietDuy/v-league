@@ -37,6 +37,7 @@ export default function Register() {
       gender: values.gender,
       dateOfBirth: values.dateOfBirth,
     };
+    console.log("check values", values);
 
     fetcher.post("auth/signup", data).then((res) => {
       dispatch(loginUser(res.data.data.user));
