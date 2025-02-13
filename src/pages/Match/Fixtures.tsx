@@ -132,11 +132,9 @@ function Fixtures() {
           <Select
             onChange={handleSelectClub}
             defaultValue={""}
-            className="w-40 h-[55px] bg-gray-100 border-none! rounded-none! text-sm shadow-sm"
+            className="w-48 h-[55px] rounded-none! hover:border-none bg-gray-100 border-none! rounded-none! text-sm shadow-sm"
           >
-            <Select.Option value="">
-              Lọc theo câu lạc bộ câu lạc bộ
-            </Select.Option>
+            <Select.Option value="">Lọc theo câu lạc bộ</Select.Option>
             {itemsClubFilter?.map((club, index) => (
               <Select.Option key={index} value={club?.id}>
                 {club?.name}

@@ -3,7 +3,7 @@ import React from "react";
 function ClubStadium() {
   return (
     <div>
-      <div className="container m-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="container px-10 m-auto grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <div className="pr-6">
             <p className="mb-2">
