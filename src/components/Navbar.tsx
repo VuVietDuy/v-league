@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import binhDinh from "../assets/binh-dinh.png";
 import binhDuong from "../assets/binh-duong.png";
 import congAnHaNoi from "../assets/cong-an-ha-noi.png";
@@ -112,6 +113,7 @@ function Navbar() {
   const [showClubs, setShowClubs] = useState(true);
   const [isOpenNavbar, setIsOpenNavbar] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const tournament = location.pathname.split("/")[1];
   const user = useSelector((state: RootState) => state.user);
 
@@ -203,9 +205,22 @@ function Navbar() {
                   Đăng nhập
                 </a>
               )}
-              <button className="py-2 px-3 text-white rounded border border-primary hover:border-gray-200">
-                <SearchOutlined className="text-2xl" />
-              </button>
+              {location?.pathname === "/search" ? (
+                <button
+                  className="py-2 px-3 text-white rounded border border-primary hover:border-gray-200"
+                  onClick={() => navigate(-1)}
+                >
+                  <CloseOutlined className="text-2xl" />
+                </button>
+              ) : (
+                <button
+                  className="py-2 px-3 text-white rounded border border-primary hover:border-gray-200"
+                  onClick={() => navigate("/search")}
+                >
+                  <SearchOutlined className="text-2xl" />
+                </button>
+              )}
+
               {isOpenNavbar ? (
                 <button
                   className="text-xl text-white block md:hidden"
