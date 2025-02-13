@@ -134,23 +134,7 @@ export default function ClubStats() {
             );
           })}
         </div>
-        <div className="grid sm:grid-cols-12 grid-cols-10 gap-3 mt-10">
-          {cardData.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="p-4 col-span-5 sm:col-span-4 md:col-span-2 rounded-md bg-[#fffffd] border"
-              >
-                <p className="text-md font-light mb-3.5 text-primary">
-                  {item.label}
-                </p>
-                <p className="md:text-5xl text-4xl font-bold text-primary">
-                  {item.value.toLocaleString("en-US")}
-                </p>
-              </div>
-            );
-          })}
-        </div>
+
         <div className="grid grid-cols-4 gap-2.5 mt-10">
           <div className="col-span-4 sm:col-span-2 md:col-span-1 text-primary">
             <div className="rounded-md border  border-x-slate-100 bg-[#fffffd] border-b-slate-100 border-t-4 border-t-red-500">
