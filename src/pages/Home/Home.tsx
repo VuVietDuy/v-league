@@ -67,8 +67,8 @@ function Home() {
 
   return (
     <div className=" mt-8">
-      <div className="flex container m-auto">
-        <div className="min-w-[326px] ">
+      <div className="flex px-2 flex-wrap container m-auto">
+        <div className="w-full md:w-[326px] ">
           <div className="rounded-xl overflow-hidden border">
             <div className="py-4 bg-blue-500">
               <p className="text-center font-bold text-xl  text-white">
@@ -153,7 +153,7 @@ function Home() {
           </div>
         </div>
         {listNews && (
-          <div className="grow pl-6">
+          <div className="flex-1 pl-6">
             <div className="grid grid-cols-3 gap-3 mb-6">
               <div className="col-span-2">
                 <NewsCard news={listNews[0]} />
