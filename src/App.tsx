@@ -19,6 +19,7 @@ import Category from "@/pages/Category/Category";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { store } from "@/store/store";
+import Search from "./pages/Search/Search";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ function App() {
           <div className="font-montserrat">
             <Navbar />
             <Routes>
+              <Route path="/search" element={<Search />} />
               <Route path="" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
