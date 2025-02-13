@@ -1,9 +1,6 @@
-import React from "react";
-import binhDinh from "../assets/binh-dinh.png";
 import { IMatch } from "../types/match";
 
 function MatchFixture({ match }: { match: IMatch }) {
-  console.log(match);
   return (
     <div className="flex justify-center border-b py-2">
       <div className="w-fit flex gap-2 items-center">

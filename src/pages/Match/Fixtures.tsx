@@ -54,6 +54,7 @@ function Fixtures() {
       setItemsClubFilter(items);
     });
   }, []);
+
   return (
     <div>
       <HeaderPage title="Lịch thi đấu" />

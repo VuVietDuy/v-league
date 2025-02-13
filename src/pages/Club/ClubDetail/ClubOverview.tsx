@@ -55,7 +55,7 @@ function ClubOverview() {
           </div>
           <div>
             {Object.entries(fixtures).map(([key, matchesOnDate]) => (
-              <div>
+              <div key={key}>
                 <div className="mb-2 mt-2">
                   <time className="text-xl block text-purple-950 font-medium text-center">
                     {key}

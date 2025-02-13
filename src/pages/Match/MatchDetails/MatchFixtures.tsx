@@ -51,7 +51,6 @@ export default function MatchFixtures() {
 
   useEffect(() => {
     fetcher.get(`tournaments/vleague-1/tables`).then((res) => {
-      console.log(res);
       setTables(res.data);
     });
   }, []);
