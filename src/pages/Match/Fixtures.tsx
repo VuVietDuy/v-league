@@ -76,7 +76,7 @@ function Fixtures() {
   }, [tournamentId, clubId, seasonId]);
 
   return (
-    <div>
+    <div className="mb-10">
       <HeaderPage title="Lịch thi đấu" />
       <div className="container m-auto px-10">
         <div className="flex border rounded-sm">
@@ -166,10 +166,10 @@ function Fixtures() {
             {matchesOnDate.map((match) => (
               <>
                 <div className="flex justify-between border-b py-2">
-                  <div className="w-full lg:w-[460px] flex justify-center gap-3">
+                  <div className="w-full lg:w-[560px] flex justify-center gap-3">
                     <div className="w-[50%] flex justify-end items-center gap-2">
                       <span className="font-semibold text-xs md:text-sm lg:text-[16px]">
-                        {match.homeClub?.name.slice(0, 15)}
+                        {match.homeClub?.name}
                       </span>
                       <img
                         className="w-[30px] rounded-full inline"
@@ -189,7 +189,7 @@ function Fixtures() {
                         alt=""
                       />
                       <span className="font-semibold text-xs md:text-sm lg:text-[16px]">
-                        {match.awayClub?.name.slice(0, 15)}
+                        {match.awayClub?.name}
                       </span>
                     </div>
                   </div>

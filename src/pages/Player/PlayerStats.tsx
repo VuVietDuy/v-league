@@ -1,68 +1,64 @@
-import { IPlayer } from "@/types/player";
 import { DownOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Dropdown } from "antd";
-import React from "react";
 import { Link } from "react-router-dom";
 
-const cardData = [
-  {
-    label: "Số trận thi đấu",
-    value: 1252,
-  },
-  {
-    label: "Số trận thắng",
-    value: 687,
-  },
-  {
-    label: "Số trận thua",
-    value: 262,
-  },
-  {
-    label: "Bàn thắng",
-    value: 2245,
-  },
-];
-
-const attack = {
-  "Bàn thắng": 2245,
-  "Bàn thắng mỗi trận": 1.79,
-  "Số lần dứt điểm": 10869,
-  "Dứt điểm trúng đích": 3891,
-  "Dứt điểm chính xác": "36%",
-  "Bàn thắng penalty": 86,
-  "Cơ hội tạo ra": 1051,
-  "Bóng chạm khung thành": 300,
-};
-const teamPlay = {
-  "Số đường chuyền": 377720,
-  "Đường chuyền mỗi trận": 301.69,
-  "Chuyền chính xác": "84%",
-  "Số lần tạt bóng": 14827,
-  "Tạt bóng chính xác": "21%",
-};
-const defence = {
-  "Số trận sạch lưới": 476,
-  "Số bàn thua": 1249,
-  "Bàn thua mỗi trận": 0.99,
-  "Cứu thua": 1474,
-  "Tắc bóng": 13118,
-  "Tắc bóng thành công": "70%",
-  "Cản phá cú sút": 2987,
-  "Truy cản": 2987,
-  "Phá bóng": 17058,
-  "Phá bóng bằng đầu": 6777,
-  "Tranh chấp tay đôi": 48173,
-  "Phạm lỗi dẫn đén bàn thua": 139,
-  "Phản lưới": 48,
-};
-const discipline = {
-  "Thẻ vàng": 1902,
-  "Thẻ đỏ": 108,
-  "Phạm lỗi": 2447,
-  "Việt vị": 1559,
-};
-
-export const PlayerStats = ({ player }: { player: IPlayer | undefined }) => {
+export const PlayerStats = ({ player }: { player: any }) => {
+  const cardData = [
+    {
+      label: "Số trận thi đấu",
+      value: player.appearances,
+    },
+    {
+      label: "Số trận thắng",
+      value: player.wins,
+    },
+    {
+      label: "Số trận thua",
+      value: player.losses,
+    },
+    {
+      label: "Bàn thắng",
+      value: player.goals,
+    },
+  ];
+  const attack = {
+    "Bàn thắng": player.goals,
+    "Bàn thắng mỗi trận": player.goalPerMatch,
+    "Số lần dứt điểm": player.shots,
+    "Dứt điểm trúng đích": player.shotsOnTarget,
+    "Dứt điểm chính xác": `${player.shootingAccuracy}%`,
+    "Bàn thắng penalty": 86,
+    "Cơ hội tạo ra": player.keyPass,
+    "Bóng chạm khung thành": 30,
+  };
+  const teamPlay = {
+    "Số đường chuyền": 377,
+    "Đường chuyền mỗi trận": 39,
+    "Chuyền chính xác": "84%",
+    "Số lần tạt bóng": 127,
+    "Tạt bóng chính xác": "21%",
+  };
+  const defence = {
+    "Số trận sạch lưới": player.cleanSheets,
+    "Số bàn thua": player.cleanSheets,
+    "Bàn thua mỗi trận": 0.99,
+    "Cứu thua": 174,
+    "Tắc bóng": 1318,
+    "Tắc bóng thành công": "70%",
+    "Cản phá cú sút": 287,
+    "Truy cản": 287,
+    "Phá bóng": 178,
+    "Phá bóng bằng đầu": 67,
+    "Tranh chấp tay đôi": 413,
+    "Phạm lỗi dẫn đén bàn thua": 19,
+    "Phản lưới": 0,
+  };
+  const discipline = {
+    "Thẻ vàng": player.yellowCard,
+    "Thẻ đỏ": player.redCard,
+    "Phạm lỗi": 247,
+    "Việt vị": 159,
+  };
   return (
     <>
       {/* Right content  */}

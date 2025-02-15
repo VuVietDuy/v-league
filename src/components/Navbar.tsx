@@ -126,17 +126,14 @@ function Navbar() {
       fetcher.get(`tournaments/${"vleague-1"}/clubs`).then((res) => res.data),
   });
 
-  console.log(clubs);
   const subTab = listTabTop.find((item) => item.path === tournament)?.childen;
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY === 0) {
         setShowClubs(true);
-        setLogoPosition(false);
       } else {
         setShowClubs(false);
-        setLogoPosition(true);
       }
     };
 
@@ -324,7 +321,7 @@ function Navbar() {
         </div>
         {/* Sub tab */}
         {subTab && (
-          <ul className="pl-24 hidden md:flex container m-auto mx-auto ">
+          <ul className="hidden md:flex container m-auto mx-auto ">
             {subTab.map((navItem, index) => (
               <li key={index} className="m-0 p-0 group">
                 <NavLink to={navItem.path} className={`text-sm font-medium `}>

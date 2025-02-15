@@ -1,5 +1,4 @@
 import { Avatar, Modal, Table } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import fetcher from "@/api/fetcher";
 import { useParams } from "react-router-dom";
@@ -7,6 +6,7 @@ import { renderPositionText } from "@/utils/renderPositionText";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/Loading";
 
 interface IProps {
   open: any;
@@ -16,7 +16,6 @@ interface IProps {
 export default function ManOfTheMatch(props: IProps) {
   const { open, onCancel } = props;
   const { matchId } = useParams();
-  const [playerIndex, setPlayerIndex] = useState(0);
   const [tab, setTab] = useState("PlayerStats");
   const { data: playersStats, refetch } = useQuery({
     queryKey: ["GET_MATCH_PLAYER_STATS"],
@@ -26,13 +25,21 @@ export default function ManOfTheMatch(props: IProps) {
       }),
   });
 
-  const { data: voteResult, refetch: refetchVoteResult } = useQuery({
+  const {
+    data: voteResult,
+    refetch: refetchVoteResult,
+    isLoading: isLoadingVoteResult,
+  } = useQuery({
     queryKey: ["GET_MATCH_VOTES"],
     queryFn: () =>
       fetcher.get(`matches/${matchId}/votes`).then((res) => {
         return res.data;
       }),
   });
+
+  console.log(voteResult);
+
+  const manOfMatch = voteResult.playersVote[0];
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -63,6 +70,10 @@ export default function ManOfTheMatch(props: IProps) {
       render: (value: any) => <span>{value}%</span>,
     },
   ];
+
+  if (isLoadingVoteResult) {
+    return <Loading />;
+  }
   return (
     <Modal open={open} onCancel={onCancel} footer={[]} width={1000}>
       <div className="grid grid-cols-2 gap-6">
@@ -70,24 +81,37 @@ export default function ManOfTheMatch(props: IProps) {
           {voteResult && playersStats && (
             <div className="bg-gray-100 rounded-2xl flex flex-col items-center justify-center p-4 mb-4 h-full">
               <div>
-                <h2 className="text-2xl font-bold text-center">
-                  {playersStats[playerIndex]?.name
-                    .split(" ")
-                    .slice(0, -1)
-                    .join(" ")}{" "}
-                  <br />
-                  <span className="text-6xl">
-                    {playersStats[playerIndex]?.name.split(" ").reverse()[0]}{" "}
-                  </span>
-                </h2>
-              </div>
-              <div className="w-40 h-40 bg-slate-400">
-                <img src={voteResult.playersVote[0].imageURL} alt="" />
-              </div>
-              <div>
-                <p className="uppercase test-white text-2xl font-medium">
+                <p className="uppercase test-white text-2xl font-semibold mb-4">
                   Cầu thủ xuất sắc
                 </p>
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="border rounded">
+                  <img
+                    className="w-full h-full"
+                    src={manOfMatch.imageURL}
+                    alt=""
+                  />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold mb-8">
+                    {manOfMatch.name.split(" ").slice(0, -1).join(" ")} <br />
+                    <span className="text-7xl">
+                      {
+                        manOfMatch.name.split(" ")[
+                          manOfMatch.name.split(" ").length - 1
+                        ]
+                      }
+                    </span>
+                  </h2>
+
+                  <span className="font-bold mr-3 text-4xl">
+                    {manOfMatch.shirtNumber}
+                  </span>
+                  <span className="text-2xl">
+                    {renderPositionText(manOfMatch.position)}
+                  </span>
+                </div>
               </div>
             </div>
           )}
@@ -135,65 +159,50 @@ export default function ManOfTheMatch(props: IProps) {
                   <div className="h-36 flex justify-between p-4 rounded-lg bg-gray-50">
                     <div className="flex flex-col justify-between">
                       <h2 className="text-xl font-bold">
-                        {playersStats[playerIndex]?.name
-                          .split(" ")
-                          .slice(0, -1)
-                          .join(" ")}{" "}
+                        {manOfMatch?.name.split(" ").slice(0, -1).join(" ")}{" "}
                         <br />
                         <span className="text-3xl">
-                          {
-                            playersStats[playerIndex]?.name
-                              .split(" ")
-                              .reverse()[0]
-                          }{" "}
+                          {manOfMatch?.name.split(" ").reverse()[0]}{" "}
                         </span>
                       </h2>
-                      <p>
-                        {renderPositionText(
-                          playersStats[playerIndex]?.position
-                        )}
-                      </p>
+                      <p>{renderPositionText(manOfMatch?.position)}</p>
                     </div>
-                    <div className="h-full w-28 bg-gray-200">
-                      <img src={playersStats[playerIndex]?.imageURL} alt="" />
+                    <div className="h-full w-28 bg-gray-200 overflow-hidden border rounded">
+                      <img
+                        className="object-cover h-full w-full"
+                        src={manOfMatch?.imageURL}
+                        alt=""
+                      />
                     </div>
                   </div>
                   <div className="mb-3">
                     <div className="flex justify-between text-base px-5 py-3 border border-t-0">
                       <span>Bàn thắng</span>
-                      <span className="font-bold">
-                        {playersStats[playerIndex]?.goals}
-                      </span>
+                      <span className="font-bold">{manOfMatch?.goals}</span>
                     </div>
                     <div className="flex justify-between text-base px-5 py-3 border border-t-0">
                       <span>Hỗ trợ</span>
-                      <span className="font-bold">
-                        {playersStats[playerIndex]?.assists}
-                      </span>
+                      <span className="font-bold">{manOfMatch?.assists}</span>
                     </div>
                     <div className="flex justify-between text-base px-5 py-3 border border-t-0">
                       <span>Tạo ra cơ hội</span>
-                      <span className="font-bold">
-                        {playersStats[playerIndex]?.keyPasses}
-                      </span>
+                      <span className="font-bold">{manOfMatch?.keyPasses}</span>
                     </div>
                     <div className="flex justify-between text-base px-5 py-3 border border-t-0">
                       <span>Hỗ trợ nổi bật</span>
                       <span className="font-bold">
-                        {playersStats[playerIndex]?.successfulDribbles}
+                        {manOfMatch?.successfulDribbles}
                       </span>
                     </div>
                     <div className="flex justify-between text-base px-5 py-3 border border-t-0">
                       <span>Dứt điểm trúng đích</span>
                       <span className="font-bold">
-                        {playersStats[playerIndex]?.shotsOnTarget}
+                        {manOfMatch?.shotsOnTarget}
                       </span>
                     </div>
                     <div className="flex justify-between text-base px-5 py-3 border border-t-0">
                       <span>Cứu thua</span>
-                      <span className="font-bold">
-                        {playersStats[playerIndex]?.saves}
-                      </span>
+                      <span className="font-bold">{manOfMatch?.saves}</span>
                     </div>
                   </div>
                 </div>
