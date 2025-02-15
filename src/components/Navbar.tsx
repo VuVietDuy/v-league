@@ -174,6 +174,8 @@ function Navbar() {
           location.pathname.includes("clubs") ||
           location.pathname.includes("match") ||
           location.pathname.includes("news") ||
+          location.pathname.includes("login") ||
+          location.pathname.includes("register") ||
           location.pathname === "/"
         ) && (
           <div
@@ -211,8 +213,10 @@ function Navbar() {
             location.pathname.includes("clubs") ||
             location.pathname.includes("match") ||
             location.pathname.includes("news") ||
+            location.pathname.includes("login") ||
+            location.pathname.includes("register") ||
             location.pathname === "/" ? (
-              <Link to="/" className={`h-12 ml-3 w-fit  `}>
+              <Link to="/" className={`h-12 ml-3 w-fit  flex-shrink-0`}>
                 <img
                   src={logoNoText}
                   alt="logo"
