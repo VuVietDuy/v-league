@@ -168,7 +168,11 @@ function Navbar() {
         </div>
       )}
       <div className="relative ">
-        {location.pathname !== "/" && (
+        {!(
+          location.pathname.includes("vleague-1") ||
+          location.pathname.includes("vleague-2") ||
+          location.pathname === "/"
+        ) && (
           <div
             className={`absolute overflow-hidden h-[144px] ${
               logoPosition
@@ -199,7 +203,9 @@ function Navbar() {
           }`}
         >
           <div className="container m-auto  flex md:justify-between justify-between items-center ">
-            {location.pathname === "/" ? (
+            {location.pathname.includes("vleague-1") ||
+            location.pathname.includes("vleague-2") ||
+            location.pathname === "/" ? (
               <Link to="/" className={`h-12 ml-3 w-fit  `}>
                 <img
                   src={logoNoText}
