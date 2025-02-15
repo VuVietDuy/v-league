@@ -8,6 +8,7 @@ import MatchFixture from "@/components/MatchFixture";
 import fetcher from "@/api/fetcher";
 import { IMatch } from "@/types/match";
 import { formatDate } from "@/utils/formatDate";
+import Loading from "@/components/Loading";
 
 interface Fixtures {
   [key: string]: IMatch[];
@@ -42,10 +43,10 @@ function ClubOverview() {
     });
   }, []);
   if (isLoadingLatestNews) {
-    return <div>Loading</div>;
+    return <Loading />;
   }
   return (
-    <div className="flex container m-auto">
+    <div className="flex container m-auto mb-20">
       <div className="min-w-[326px] ">
         <div className="rounded-xl overflow-hidden border">
           <div className="py-4 bg-blue-500">

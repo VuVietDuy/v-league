@@ -79,6 +79,16 @@ export default function VoteManOfMatch(props: IProps) {
       render: (value: any) => <span>{value}%</span>,
     },
   ];
+
+  const handleNext = (direct: number) => {
+    setPlayerIndex((pre) => {
+      const newIndex = pre - 1;
+      if (newIndex === -1) return playersStats.length - 1;
+      if (newIndex === playersStats.length) return 0;
+      return newIndex;
+    });
+  };
+
   return (
     <Modal
       open={open}
@@ -95,14 +105,14 @@ export default function VoteManOfMatch(props: IProps) {
             columns={columns}
             dataSource={voteResult?.playersVote.slice(0, 6)}
             pagination={false}
-            rowKey={"key"}
+            rowKey={"id"}
           ></Table>
           <p className="text-center mt-2">{voteResult?.totalVotes} bình chọn</p>
         </div>
         <div className="col-span-1">
           <div className="flex ">
             <div
-              onClick={() => setPlayerIndex((pre) => pre - 1)}
+              onClick={() => handleNext(-1)}
               className="w-8 flex items-center justify-center hover:cursor-pointer"
             >
               <LeftOutlined className="text-2xl" />
@@ -122,7 +132,7 @@ export default function VoteManOfMatch(props: IProps) {
                           playersStats[playerIndex]?.name
                             .split(" ")
                             .reverse()[0]
-                        }{" "}
+                        }
                       </span>
                     </h2>
                     <p>
@@ -130,7 +140,11 @@ export default function VoteManOfMatch(props: IProps) {
                     </p>
                   </div>
                   <div className="h-full w-28 bg-gray-200">
-                    <img src={playersStats[playerIndex]?.imageURL} alt="" />
+                    <img
+                      className="w-full h-full object-cover border rounded"
+                      src={playersStats[playerIndex]?.imageURL}
+                      alt=""
+                    />
                   </div>
                 </div>
                 <div className="mb-3">
@@ -195,7 +209,7 @@ export default function VoteManOfMatch(props: IProps) {
             )}
 
             <div
-              onClick={() => setPlayerIndex((pre) => pre + 1)}
+              onClick={() => handleNext(1)}
               className="w-8 flex items-center justify-center hover:cursor-pointer"
             >
               <RightOutlined className="text-2xl" />

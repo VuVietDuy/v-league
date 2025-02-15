@@ -1,4 +1,4 @@
-export const formatDate = (dateString: string): string => {
+export const formatDate = (dateString: any): string => {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",

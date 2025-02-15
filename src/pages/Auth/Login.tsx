@@ -9,7 +9,6 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = (values: any) => {
-    console.log(values);
     fetcher.post("auth/login", values).then((res) => {
       console.log(res);
       dispatch(loginUser(res.data.data.user));

@@ -6,7 +6,7 @@ import { Dropdown, Spin } from "antd";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
 const teamPlay = {
-  "Số đường chuyền": 37720,
+  "Số đường chuyền": 3720,
   "Đường chuyền mỗi trận": 319,
   "Chuyền chính xác": "84%",
   "Số lần tạt bóng": 1427,
@@ -27,17 +27,15 @@ export default function ClubStats() {
     queryFn: () =>
       fetcher.get(`tournaments/vleague-1/seasons`).then((res) => res.data),
   });
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const seasonId = searchParams.get("seasonId");
-  console.log(clubStats);
 
   if (isLoading) {
     return <Loading />;
   }
   return (
     <div>
-      {" "}
-      <div className="container mx-auto px-10 pb-10">
+      <div className="container mx-auto px-10 pb-10 mb-10">
         <div className="flex justify-between border rounded-sm">
           <Dropdown
             menu={{

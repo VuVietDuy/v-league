@@ -1,5 +1,5 @@
 import { ArrowRightOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IMatch } from "@/types/match";
 import fetcher from "@/api/fetcher";
@@ -33,16 +33,16 @@ function ClubFixtures() {
   }, []);
 
   return (
-    <div className="container m-auto px-10">
+    <div className="container m-auto px-10 mb-20">
       {Object.entries(fixtures).map(([key, matchesOnDate]) => (
-        <div>
-          {matchesOnDate.map((match) => (
-            <>
+        <div key={key}>
+          {matchesOnDate.map((match, index) => (
+            <div key={index}>
               <h3 className="text-xl font-bold mt-6">{key}</h3>
               <div className="flex justify-between border-b py-2">
-                <div className="w-full lg:w-[460px] flex justify-center gap-3">
+                <div className="w-full lg:w-[560px] flex justify-center gap-3">
                   <div className="w-[50%] flex justify-end items-center gap-2">
-                    <span className="font-semibold text-xs md:text-sm lg:text-[16px]">
+                    <span className="font-semibold text-xs md:text-sm lg:text-[16px] text-right">
                       {match.homeClub?.name}
                     </span>
                     <img
@@ -75,7 +75,7 @@ function ClubFixtures() {
                   <ArrowRightOutlined />
                 </div>
               </div>
-            </>
+            </div>
           ))}
         </div>
       ))}

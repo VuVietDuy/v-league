@@ -1,6 +1,7 @@
 import { ArrowRightOutlined } from "@ant-design/icons";
 import squadBackground from "../assets/squad-bg.svg";
 import { Link } from "react-router-dom";
+import { renderPositionText } from "@/utils/renderPositionText";
 
 const PlayerCard = (props: any) => {
   const { player } = props;
@@ -32,7 +33,7 @@ const PlayerCard = (props: any) => {
       <div className="p-3">
         <h3 className="text-xl font-bold mb-1">{player.name}</h3>
         <p className="mb-2">
-          <strong>{1}</strong> {player.position} <br />
+          <strong>{1}</strong> {renderPositionText(player.position)} <br />
         </p>
         <div className="flex justify-between">
           <div className="flex items-center gap-2">

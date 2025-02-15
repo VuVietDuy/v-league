@@ -37,11 +37,11 @@ export default function ManOfTheMatch(props: IProps) {
       }),
   });
 
-  console.log(voteResult);
+  if (isLoadingVoteResult) {
+    return <Loading />;
+  }
 
   const manOfMatch = voteResult.playersVote[0];
-
-  const user = useSelector((state: RootState) => state.user);
 
   const columns = [
     {
@@ -71,9 +71,6 @@ export default function ManOfTheMatch(props: IProps) {
     },
   ];
 
-  if (isLoadingVoteResult) {
-    return <Loading />;
-  }
   return (
     <Modal open={open} onCancel={onCancel} footer={[]} width={1000}>
       <div className="grid grid-cols-2 gap-6">
@@ -88,7 +85,7 @@ export default function ManOfTheMatch(props: IProps) {
               <div className="grid grid-cols-2 gap-6">
                 <div className="border rounded">
                   <img
-                    className="w-full h-full"
+                    className="w-full h-full rounded-lg"
                     src={manOfMatch.imageURL}
                     alt=""
                   />
@@ -146,7 +143,7 @@ export default function ManOfTheMatch(props: IProps) {
                 columns={columns}
                 dataSource={voteResult?.playersVote.slice(0, 5)}
                 pagination={false}
-                rowKey={"key"}
+                rowKey={"id"}
               ></Table>
               <p className="text-center mt-2">
                 {voteResult?.totalVotes} bình chọn

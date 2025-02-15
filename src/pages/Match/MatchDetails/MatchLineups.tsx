@@ -43,7 +43,9 @@ export default function MatchLineups() {
       title: "Số áo",
       dataIndex: "shirtNumber",
       key: "shirtNumber",
-      render: (_, record) => <span>{record.player.shirtNumber}</span>,
+      render: (_, record) => (
+        <span className="font-bold">{record.player.shirtNumber}</span>
+      ),
     },
     {
       title: "Vị trí thi đấu",

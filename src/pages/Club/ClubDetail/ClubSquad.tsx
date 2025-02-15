@@ -1,25 +1,28 @@
-import { useEffect, useState } from "react";
 import PlayerCard from "@/components/PlayerCard";
 import fetcher from "@/api/fetcher";
 import { useParams } from "react-router-dom";
+import Loading from "@/components/Loading";
+import { useQuery } from "@tanstack/react-query";
 import { IPlayer } from "@/types/player";
 
 function ClubSquad() {
-  const [players, setPlayers] = useState<IPlayer[]>([]);
   const { clubId } = useParams();
-  useEffect(() => {
-    fetcher.get(`clubs/${clubId}/players`).then((res) => {
-      setPlayers(res.data.data.players);
-    });
-  }, []);
+  const { data: players, isLoading } = useQuery({
+    queryKey: ["GET_LIST_PLAYER_IN_CLUB"],
+    queryFn: () =>
+      fetcher
+        .get(`clubs/${clubId}/players`)
+        .then((res) => res.data.data.players),
+  });
 
-  console.log(players);
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
-    <div className="container m-auto">
-      <h1 className="my-4">Player List</h1>
+    <div className="container m-auto mb-20">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {players.map((player, index) => (
+        {players.map((player: IPlayer, index: number) => (
           <PlayerCard player={player} key={index} />
         ))}
       </div>

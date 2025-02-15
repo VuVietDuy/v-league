@@ -163,8 +163,11 @@ function Fixtures() {
         {Object.entries(fixtures).map(([key, matchesOnDate]) => (
           <div key={key}>
             <h3 className="text-xl font-bold mt-6">{key}</h3>
-            {matchesOnDate.map((match) => (
-              <>
+            {matchesOnDate.map((match, index) => (
+              <div
+                key={index}
+                className="bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white hover:cursor-pointer group"
+              >
                 <div className="flex justify-between border-b py-2">
                   <div className="w-full lg:w-[560px] flex justify-center gap-3">
                     <div className="w-[50%] flex justify-end items-center gap-2">
@@ -178,7 +181,7 @@ function Fixtures() {
                       />
                     </div>
                     <div className="flex items-center px-2 rounded border">
-                      <span className="text-sm text-purple-950 ">
+                      <span className="text-sm text-purple-950 group-hover:text-white">
                         {match.time}
                       </span>
                     </div>
@@ -197,11 +200,11 @@ function Fixtures() {
                     <StadiumIcon className="mr-2" />
                     <span className="text-xs">{match.stadium}</span>
                   </div>
-                  <div className="flex justify-end">
+                  <div className="flex justify-end hover:translate-x-1 mr-4 group-hover:mr-2 duration-300">
                     <ArrowRightOutlined />
                   </div>
                 </div>
-              </>
+              </div>
             ))}
           </div>
         ))}

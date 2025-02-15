@@ -1,8 +1,6 @@
 import { Link, useParams, useSearchParams } from "react-router-dom";
-
 import FormItem from "@/components/FormItem";
 import HeaderPage from "@/components/HeaderPage";
-import { FormStatus } from "@/types/form";
 import { IClub } from "@/types/club";
 import fetcher from "@/api/fetcher";
 import { Dropdown, Spin } from "antd";
@@ -12,14 +10,14 @@ import Loading from "@/components/Loading";
 import { IMatch } from "@/types/match";
 
 interface TablesItem {
-  position?: number;
+  position: number;
   club: IClub;
-  played?: number;
-  won?: number;
-  drawn?: number;
-  lost?: number;
-  goalsFor?: number;
-  goalsAgainst?: number;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goalsFor: number;
+  goalsAgainst: number;
   goalDifference: number;
   points: number;
   form: IMatch[];
@@ -35,6 +33,7 @@ function Tables() {
     queryFn: () =>
       fetcher.get(`tournaments/${tournamentId}/tables`).then((res) => res.data),
   });
+  console.log(tables);
 
   const { data: seasonsData, isLoading: isLoadingSeasonsData } = useQuery({
     queryKey: ["GET_LISTS_SEASON_FOR_RESULTS_PAGE"],
@@ -172,8 +171,12 @@ function Tables() {
                   <td className="px-6 py-2">{item.goalDifference}</td>
                   <td className="px-6 py-2 hidden lg:block">
                     <div className="h-full flex items-center gap-2">
-                      {item.form.map((match) => (
-                        <FormItem match={match} clubId={item.club.id} />
+                      {item.form.map((match, index) => (
+                        <FormItem
+                          match={match}
+                          clubId={item.club.id}
+                          key={index}
+                        />
                       ))}
                     </div>
                   </td>

@@ -66,16 +66,14 @@ export default function MatchFixtures() {
 
         <div>
           {Object.entries(fixtures).map(([key, matchesOnDate]) => (
-            <div>
+            <div key={key}>
               <div className="mb-2 mt-2">
                 <time className="text-xl block text-purple-950 font-medium text-center">
                   {key}
                 </time>
               </div>
-              {matchesOnDate.map((match) => (
-                <>
-                  <MatchFixture match={match} />
-                </>
+              {matchesOnDate.map((match, index) => (
+                <MatchFixture match={match} key={index} />
               ))}
             </div>
           ))}
@@ -115,7 +113,10 @@ export default function MatchFixtures() {
           </thead>
           <tbody>
             {tables?.map((item, index) => (
-              <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 border-b dark:border-gray-700">
+              <tr
+                key={index}
+                className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 border-b dark:border-gray-700"
+              >
                 <td className="px-2 py-1">{item.position}</td>
                 <td className="px-2 py-1 flex items-center gap-2">
                   <img className="w-8 h-8" src={item.club.logoURL} alt="" />
