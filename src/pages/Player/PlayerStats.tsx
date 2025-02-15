@@ -66,7 +66,7 @@ export const PlayerStats = ({ player }: { player: IPlayer | undefined }) => {
   return (
     <>
       {/* Right content  */}
-      <div className="flex-1  flex flex-col col-span-8 mt-5 lg:pl-10 p-0 min-h-[230px] ">
+      <div className="flex-1 px-2 md:px-0 flex flex-col col-span-8 mt-5 lg:pl-10 p-0 min-h-[230px] ">
         <div className="flex justify-between border rounded-sm">
           <Dropdown
             menu={{
@@ -114,7 +114,7 @@ export const PlayerStats = ({ player }: { player: IPlayer | undefined }) => {
             return (
               <div
                 key={index}
-                className="p-4 col-span-5 sm:col-span-4 md:col-span-2 rounded-md bg-[#fffffd] border"
+                className="p-4 col-span-4 md:col-span-2 rounded-md bg-[#fffffd] border"
               >
                 <p className="text-md font-light mb-3.5 text-primary">
                   {item.label}
@@ -129,7 +129,7 @@ export const PlayerStats = ({ player }: { player: IPlayer | undefined }) => {
         </div>
 
         <div className="grid grid-cols-4 gap-2.5 mt-10">
-          <div className="col-span-2 text-primary">
+          <div className="col-span-4 md:col-span-2 text-primary">
             <div className="rounded-md border  border-x-slate-100 bg-[#fffffd] border-b-slate-100 border-t-4 border-t-green-500">
               <p className="text-xl font-bold px-2 py-3.5 border-b">Tấn công</p>
               {Object.entries(attack).map(([key, value], index) => (
@@ -149,7 +149,7 @@ export const PlayerStats = ({ player }: { player: IPlayer | undefined }) => {
             </div>
           </div>
 
-          <div className="col-span-2">
+          <div className="col-span-4 md:col-span-2 text-primary">
             <div className="rounded-md border  border-x-slate-100 bg-[#fffffd] border-b-slate-100 border-t-4 border-t-green-500 text-primary">
               <p className="text-xl font-bold px-2 py-3.5 border-b">Phối hợp</p>
               {Object.entries(teamPlay).map(([key, value], index) => (
@@ -187,7 +187,7 @@ export const PlayerStats = ({ player }: { player: IPlayer | undefined }) => {
               ))}
             </div>
           </div>
-          <div className="col-span-2">
+          <div className="col-span-4 md:col-span-2 text-primary">
             <div className="rounded-md border  border-x-slate-100 bg-[#fffffd] border-b-slate-100 border-t-4 border-t-green-500 text-primary">
               <p className="text-xl font-bold px-2 py-3.5 border-b">Phạm lỗi</p>
               {Object.entries(discipline).map(([key, value], index) => (

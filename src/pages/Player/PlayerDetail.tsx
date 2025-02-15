@@ -20,8 +20,8 @@ export default function PlayerDetails() {
   return (
     <div className="container m-auto grid grid-cols-4 h-fit pb-10">
       <div className="col-span-4 flex   items-end   ">
-        <div className="w-[330px] justify-end">
-          <div className=" w-[230px] h-[230px] lg:ml-20 shadow-xl rounded-lg overflow-hidden    mt-10 ">
+        <div className=" w-[150px] md:w-[330px] justify-end">
+          <div className="w-[150px] h-[150px] md:w-[230px] md:h-[230px]  lg:ml-20 shadow-xl rounded-lg overflow-hidden    mt-10 ">
             {player && (
               <img
                 className="w-full h-full object-cover"
@@ -34,14 +34,16 @@ export default function PlayerDetails() {
 
         <div className="flex-1 flex flex-col  pl-6  ">
           <div className="flex flex-1 h-[230px] justify-between items-center   ">
-            <p className="text-5xl align-middle ">{player?.name}</p>
-            <p className="text-[180px] leading-[180px] font-bold">
+            <p className=" text-3xl md:text-5xl align-middle ">
+              {player?.name}
+            </p>
+            <p className="text-[135px] md:text-[180px] leading-[180px] font-bold">
               {player?.shirtNumber}
             </p>
           </div>
           <div className="flex flex-col gap-5">
             <div className="flex">
-              <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+              <ul className="flex overflow-auto text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
                 <li className="me-2">
                   <Link
                     to={`/players/${player?.id}/overview`}
