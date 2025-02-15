@@ -43,7 +43,7 @@ function ClubFixtures() {
                 <div className="w-full lg:w-[460px] flex justify-center gap-3">
                   <div className="w-[50%] flex justify-end items-center gap-2">
                     <span className="font-semibold text-xs md:text-sm lg:text-[16px]">
-                      {match.homeClub?.name.slice(0, 15)}
+                      {match.homeClub?.name}
                     </span>
                     <img
                       className="w-[30px] rounded-full inline"
@@ -63,7 +63,7 @@ function ClubFixtures() {
                       alt=""
                     />
                     <span className="font-semibold text-xs md:text-sm lg:text-[16px]">
-                      {match.awayClub?.name.slice(0, 15)}
+                      {match.awayClub?.name}
                     </span>
                   </div>
                 </div>

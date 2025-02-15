@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { News } from "../types/news";
 
 interface IProps {
@@ -7,7 +8,7 @@ interface IProps {
 function NewsCard(props: IProps) {
   const { news } = props;
   return (
-    <div className="group hover:cursor-pointer">
+    <Link to={`news/${news.id}`} className="group hover:cursor-pointer">
       <div className=" aspect-[16/9] rounded overflow-hidden">
         <img
           src={news.thumbnail}
@@ -19,7 +20,7 @@ function NewsCard(props: IProps) {
         {news.tag}
       </span>
       <p className="py-1 group-hover:underline">{news.title}</p>
-    </div>
+    </Link>
   );
 }
 

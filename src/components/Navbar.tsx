@@ -119,7 +119,13 @@ function Navbar() {
   const navigate = useNavigate();
   const tournament = location.pathname.split("/")[1];
   const user = useSelector((state: RootState) => state.user);
+  const { data: clubs, isLoading } = useQuery({
+    queryKey: ["GET_CLUBS_LIST_FOR_NAVBAR"],
+    queryFn: () =>
+      fetcher.get(`tournaments/${"vleague-1"}/clubs`).then((res) => res.data),
+  });
 
+  console.log(clubs);
   const subTab = listTabTop.find((item) => item.path === tournament)?.childen;
 
   useEffect(() => {
@@ -142,16 +148,21 @@ function Navbar() {
       {showClubs && (
         <div className="bg-gray-100 py-2 hidden md:block">
           <ul className="flex space-x-4 justify-center h-10">
-            {listClubs.map((club, index) => (
-              <li key={index}>
-                <NavLink
-                  to={club.path}
-                  className={"flex w-10 h-10 justify-center items-center"}
-                >
-                  <img src={club.image} className="w-8 hover:w-9 " alt="Logo" />
-                </NavLink>
-              </li>
-            ))}
+            {!isLoading &&
+              clubs.map((club: any, index: number) => (
+                <li key={index}>
+                  <NavLink
+                    to={`clubs/${club.id}`}
+                    className={"flex w-10 h-10 justify-center items-center"}
+                  >
+                    <img
+                      src={club.logoURL}
+                      className="w-8 h-8 object-contain hover:w-9 "
+                      alt="Logo"
+                    />
+                  </NavLink>
+                </li>
+              ))}
           </ul>
         </div>
       )}

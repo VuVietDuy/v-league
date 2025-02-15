@@ -8,88 +8,72 @@ import {
 import { useEffect, useState } from "react";
 import fetcher from "@/api/fetcher";
 import { IMatch } from "@/types/match";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { formatDate } from "@/utils/formatDate";
 import StadiumIcon from "@/components/icons/StadiumIcon";
 import HeaderPage from "@/components/HeaderPage";
-import { Dropdown, MenuProps, Select } from "antd";
-import { IClub } from "@/types/club";
+import { Dropdown, Spin } from "antd";
+import { useQuery } from "@tanstack/react-query";
 
 interface Fixtures {
   [key: string]: IMatch[];
 }
 
-interface Club {
-  id: number;
-  name: string;
-}
-
 function Fixtures() {
   const { tournamentId } = useParams();
   const [fixtures, setFixtures] = useState<Fixtures>({});
-  const [itemsClubFilter, setItemsClubFilter] = useState<Club[]>();
-  const [selectedClubId, setselectedClubIdId] = useState<number>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const clubId = searchParams.get("clubId");
+  const seasonId = searchParams.get("seasonId");
 
-  useEffect(() => {
-    fetcher.get(`tournaments/${tournamentId}/fixtures`).then((res) => {
-      let matchesData: IMatch[] = res.data;
-      matchesData = matchesData.slice(0, 7);
-      const newFixtures: Fixtures = {};
-      matchesData.map((match, index) => {
-        const formattedDate = formatDate(
-          new Date(match?.date).toISOString().split("T")[0]
-        );
+  const { data: clubsData, isLoading: isLoadingClubsData } = useQuery({
+    queryKey: ["GET_LISTS_CLUB_FOR_RESULTS_PAGE"],
+    queryFn: () =>
+      fetcher.get(`tournaments/${tournamentId}/clubs`).then((res) => res.data),
+  });
 
-        if (newFixtures[formattedDate]) {
-          newFixtures[formattedDate].push(match);
-        } else {
-          newFixtures[formattedDate] = [match];
-        }
-      });
-      setFixtures(newFixtures);
-    });
-
-    fetcher.get(`tournaments/${tournamentId}/clubs`).then((res) => {
-      const clubsData: IClub[] = res.data;
-      const clubs: Club[] = [];
-      clubsData.map((club) => {
-        clubs.push({
-          id: Number(club.id),
-          name: club.name,
-        });
-      });
-      setItemsClubFilter(clubs);
-    });
-  }, []);
-  console.log(fixtures);
-  useEffect(() => {
-    if (selectedClubId) {
+  const { data: seasonsData, isLoading: isLoadingSeasonsData } = useQuery({
+    queryKey: ["GET_LISTS_SEASON_FOR_RESULTS_PAGE"],
+    queryFn: () =>
       fetcher
-        .get(`tournaments/${tournamentId}/fixtures?clubId=${selectedClubId}`)
-        .then((res) => {
-          let matchesData: IMatch[] = res.data;
-          matchesData = matchesData.slice(0, 7);
-          const newFixtures: Fixtures = {};
-          matchesData.map((match, index) => {
-            const formattedDate = formatDate(
-              new Date(match?.date).toISOString().split("T")[0]
-            );
+        .get(`tournaments/${tournamentId}/seasons`)
+        .then((res) => res.data),
+  });
 
-            if (newFixtures[formattedDate]) {
-              newFixtures[formattedDate].push(match);
-            } else {
-              newFixtures[formattedDate] = [match];
-            }
-          });
-          setFixtures(newFixtures);
-          // const clubsData: IClub[] = res.data;
-        });
+  useEffect(() => {
+    let params = {};
+    params = {
+      ...params,
+      status: "COMPLETED",
+    };
+    if (clubId) {
+      params = { ...params, clubId: clubId };
     }
-  }, [selectedClubId]);
+    if (seasonId) {
+      params = { ...params, seasonId: seasonId };
+    }
+    fetcher
+      .get(`tournaments/${tournamentId}/fixtures`, { params: params })
+      .then((res) => {
+        const matchesData: IMatch[] = res.data;
+        matchesData.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        const newFixtures: Fixtures = {};
+        matchesData.map((match) => {
+          const formattedDate = formatDate(
+            new Date(match.date).toISOString().split("T")[0]
+          );
 
-  const handleSelectClub = (e: any) => {
-    setselectedClubIdId(e);
-  };
+          if (newFixtures[formattedDate]) {
+            newFixtures[formattedDate].push(match);
+          } else {
+            newFixtures[formattedDate] = [match];
+          }
+        });
+        setFixtures(newFixtures);
+      });
+  }, [tournamentId, clubId, seasonId]);
 
   return (
     <div>
@@ -98,24 +82,19 @@ function Fixtures() {
         <div className="flex border rounded-sm">
           <Dropdown
             menu={{
-              items: [
-                {
-                  key: 1,
-                  label: "2024/25",
-                },
-                {
-                  key: 2,
-                  label: "2023/24",
-                },
-                {
-                  key: 3,
-                  label: "2022/23",
-                },
-                {
-                  key: 4,
-                  label: "2021/22",
-                },
-              ],
+              items: isLoadingSeasonsData
+                ? []
+                : seasonsData.map((season: any, index: number) => ({
+                    key: index,
+                    label: (
+                      <a
+                        className="hover:text-purple-800 text-wrap w-28"
+                        href={`?seasonId=${season.id}`}
+                      >
+                        {season.name.split(" ").slice(-1)[0]}
+                      </a>
+                    ),
+                  })),
             }}
           >
             <div
@@ -124,44 +103,65 @@ function Fixtures() {
             >
               <div>
                 <p className="text-[10px]">Lọc theo mùa giải</p>
-                <p>2024/25</p>
+                <p>
+                  {seasonId === null || (isLoadingSeasonsData && <Spin />)}
+                  {seasonId !== null && !isLoadingSeasonsData
+                    ? seasonsData
+                        .filter((season: any) => season.id === +seasonId)[0]
+                        .name.split(" ")
+                        .slice(-1)[0]
+                    : !isLoadingSeasonsData &&
+                      seasonsData
+                        .filter((season: any) => season.isActive)[0]
+                        .name.split(" ")
+                        .slice(-1)[0]}
+                </p>
               </div>
               <DownOutlined className="text-xs" />
             </div>
           </Dropdown>
-          <Select
-            onChange={handleSelectClub}
-            defaultValue={""}
-            className="w-48 h-[55px] rounded-none! hover:border-none bg-gray-100 border-none! rounded-none! text-sm shadow-sm"
+          <Dropdown
+            menu={{
+              items: isLoadingClubsData
+                ? []
+                : clubsData.map((club: any, index: number) => ({
+                    key: index,
+                    label: (
+                      <a
+                        className="hover:text-purple-800 text-wrap"
+                        href={`?clubId=${club.id}`}
+                      >
+                        {club.name}
+                      </a>
+                    ),
+                  })),
+            }}
           >
-            <Select.Option value="">Lọc theo câu lạc bộ</Select.Option>
-            {itemsClubFilter?.map((club, index) => (
-              <Select.Option key={index} value={club?.id}>
-                {club?.name}
-              </Select.Option>
-            ))}
-          </Select>
-          {/* <Dropdown menu={{ items: itemsClubFilter }} trigger={["click"]}>
             <div
               className="w-fit px-3 py-2 flex gap-8 border-r"
               onClick={(e) => e.preventDefault()}
             >
               <div>
                 <p className="text-[10px]">Lọc theo câu lạc bộ</p>
-                <p>Tất cả câu lạc bộ</p>
+                <p>
+                  {clubId !== null && !isLoadingClubsData
+                    ? clubsData.filter((club: any) => club.id === +clubId)[0]
+                        .name
+                    : "Tất cả câu lạc bộ"}
+                </p>
               </div>
               <DownOutlined className="text-xs" />
             </div>
-          </Dropdown> */}
-          <a
+          </Dropdown>
+          <Link
             className="px-3 flex items-center gap-2 hover:text-purple-900"
-            href=""
+            to=""
           >
             <ReloadOutlined /> Xóa bộ lọc
-          </a>
+          </Link>
         </div>
-        {Object.entries(fixtures).map(([key, matchesOnDate], index) => (
-          <div>
+        {Object.entries(fixtures).map(([key, matchesOnDate]) => (
+          <div key={key}>
             <h3 className="text-xl font-bold mt-6">{key}</h3>
             {matchesOnDate.map((match) => (
               <>

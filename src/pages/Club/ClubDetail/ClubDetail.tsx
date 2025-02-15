@@ -16,7 +16,7 @@ function ClubDetail() {
     fetcher.get(`/clubs/${clubId}`).then((res) => {
       setClubData(res.data.data);
     });
-  }, []);
+  }, [clubId]);
 
   return (
     <div>

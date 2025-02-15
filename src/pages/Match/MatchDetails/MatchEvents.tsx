@@ -24,7 +24,11 @@ export default function MatchEvents() {
           <div className="flex-1">
             <div className=" flex items-center gap-4">
               <div className="w-20 h-20">
-                <img src={match?.homeClub?.logoURL} alt="" />
+                <img
+                  src={match?.homeClub?.logoURL}
+                  className="w-full h-full object-cover"
+                  alt=""
+                />
               </div>
               <p className="text-xl flex items-center font-bold">
                 <Link to={`/clubs/${match.homeClubId}`}>
@@ -35,12 +39,16 @@ export default function MatchEvents() {
             <div>
               <ul className="mr-6 mt-4">
                 {match.events
-                  .filter((event: any) => event.eventType === "GOAL")
+                  .filter(
+                    (event: any) =>
+                      event.eventType === "GOAL" ||
+                      event.eventType === "OWN_GOAL"
+                  )
                   .filter((event: any) => event.clubId === match.homeClubId)
                   .map((event: any, index: number) => (
                     <li className="mb-2 flex flex-col items-end" key={index}>
                       <div className="flex text-sm font-bold gap-2">
-                        {event.eventTime}'{renderIconEvent(event.eventType)}
+                        {event.eventTime}'{renderIconEvent(event.eventType, 3)}
                       </div>
                       <a className="text-sm">{event?.player?.name}</a>
                       <a className="text-xs">
@@ -69,19 +77,27 @@ export default function MatchEvents() {
                   {match?.awayClub?.name}
                 </Link>
               </p>
-              <div className="w-20 h-20 bg-purple-950">
-                <img src={match?.awayClub?.logoURL} alt="" />
+              <div className="w-20 h-20">
+                <img
+                  src={match?.awayClub?.logoURL}
+                  className="w-full h-full object-cover"
+                  alt=""
+                />
               </div>
             </div>
             <div>
               <ul className="ml-6 mt-4">
                 {match.events
-                  .filter((event: any) => event.eventType === "GOAL")
+                  .filter(
+                    (event: any) =>
+                      event.eventType === "GOAL" ||
+                      event.eventType === "OWN_GOAL"
+                  )
                   .filter((event: any) => event.clubId === match.awayClubId)
                   .map((event: any, index: number) => (
                     <li className="mb-2" key={index}>
                       <span className="flex text-sm font-bold gap-2">
-                        {renderIconEvent(event.eventType)}
+                        {renderIconEvent(event.eventType, 3)}
                         {event.eventTime}'
                       </span>
                       <a className="text-sm block">{event?.player?.name}</a>
