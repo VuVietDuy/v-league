@@ -193,10 +193,14 @@ function Navbar() {
           </div>
         )}
 
-        <div className="bg-primary h-16 border-b-2 md:border-b-0 md:border-orange-500 md:pl-32">
+        <div
+          className={`bg-primary h-16 border-b-2 md:border-b-0 md:border-orange-500 ${
+            location.pathname !== "/" && "md:pl-32"
+          }`}
+        >
           <div className="container m-auto  flex md:justify-between justify-between items-center ">
             {location.pathname === "/" ? (
-              <Link to="/" className={`h-12 ml-3 w-12  `}>
+              <Link to="/" className={`h-12 ml-3 w-fit  `}>
                 <img
                   src={logoNoText}
                   alt="logo"
@@ -261,7 +265,10 @@ function Navbar() {
               {user.id ? (
                 <p className="text-white font-bold">{user.name}</p>
               ) : (
-                <a href="/login" className="py-2 px-3 border bg-white rounded">
+                <a
+                  href="/login"
+                  className="py-2 px-3 border bg-white rounded text-nowrap"
+                >
                   Đăng nhập
                 </a>
               )}
