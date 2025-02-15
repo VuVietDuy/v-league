@@ -155,31 +155,52 @@ function Navbar() {
           </ul>
         </div>
       )}
-      <div className="relative overflow-hidden">
-        <Link
-          to="/"
-          className={`${
-            logoPosition
-              ? "bg-white rounded-full -top-[26px] -left-5 w-40 p-8"
-              : "top-[55%] -translate-y-[55%] w-[132px] left-4 p-4"
-          }  absolute md:block hidden`}
-        >
-          <img
-            src={logo}
-            alt="logo"
-            className="w-full object-cover drop-shadow-lg"
-          />
-        </Link>
+      <div className="relative ">
+        {location.pathname !== "/" && (
+          <div
+            className={`absolute overflow-hidden h-[144px] ${
+              logoPosition
+                ? "-top-[26px] -left-5 "
+                : "top-[55%] -translate-y-[55%]"
+            }`}
+          >
+            <Link
+              to="/"
+              className={`${
+                logoPosition
+                  ? "bg-white rounded-full w-40 p-8"
+                  : " w-[132px] left-4 p-4"
+              }   md:block hidden`}
+            >
+              <img
+                src={logo}
+                alt="logo"
+                className="w-full object-cover drop-shadow-lg"
+              />
+            </Link>
+          </div>
+        )}
 
         <div className="bg-primary h-16 border-b-2 md:border-b-0 md:border-orange-500 md:pl-32">
           <div className="container m-auto  flex md:justify-between justify-between items-center ">
-            <Link to="/" className={`h-12 w-12  md:hidden block`}>
-              <img
-                src={logoNoText}
-                alt="logo"
-                className=" h-full object-cover drop-shadow-lg"
-              />
-            </Link>
+            {location.pathname === "/" ? (
+              <Link to="/" className={`h-12 ml-3 w-12  `}>
+                <img
+                  src={logoNoText}
+                  alt="logo"
+                  className=" h-full object-cover drop-shadow-lg"
+                />
+              </Link>
+            ) : (
+              <Link to="/" className={`h-12 w-12 ml-3 md:hidden block`}>
+                <img
+                  src={logoNoText}
+                  alt="logo"
+                  className=" h-full object-cover drop-shadow-lg"
+                />
+              </Link>
+            )}
+
             <ul className="hidden md:flex space-x-4 relative ">
               {listTabTop.map((navItem, index) => (
                 <li
