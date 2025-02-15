@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import binhDinh from "../assets/binh-dinh.png";
 import binhDuong from "../assets/binh-duong.png";
 import congAnHaNoi from "../assets/cong-an-ha-noi.png";
@@ -20,6 +20,8 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import logo from "../assets/V.League.png";
+import logoNoText from "../assets/V.LeagueNoText.png";
 
 const listClubs = [
   {
@@ -112,6 +114,7 @@ const listTabTop = [
 function Navbar() {
   const [showClubs, setShowClubs] = useState(true);
   const [isOpenNavbar, setIsOpenNavbar] = useState(false);
+  const [logoPosition, setLogoPosition] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const tournament = location.pathname.split("/")[1];
@@ -123,8 +126,10 @@ function Navbar() {
     const handleScroll = () => {
       if (window.scrollY === 0) {
         setShowClubs(true);
+        setLogoPosition(false);
       } else {
         setShowClubs(false);
+        setLogoPosition(true);
       }
     };
 
@@ -150,10 +155,32 @@ function Navbar() {
           </ul>
         </div>
       )}
-      <div className="">
-        <div className="bg-primary h-16 border-b-2 md:border-b-0 md:border-orange-500">
-          <div className="container m-auto flex md:justify-between justify-end">
-            <ul className="hidden md:flex space-x-4">
+      <div className="relative overflow-hidden">
+        <Link
+          to="/"
+          className={`${
+            logoPosition
+              ? "bg-white rounded-full -top-[26px] -left-5 w-40 p-8"
+              : "top-[55%] -translate-y-[55%] w-[132px] left-4 p-4"
+          }  absolute md:block hidden`}
+        >
+          <img
+            src={logo}
+            alt="logo"
+            className="w-full object-cover drop-shadow-lg"
+          />
+        </Link>
+
+        <div className="bg-primary h-16 border-b-2 md:border-b-0 md:border-orange-500 md:pl-32">
+          <div className="container m-auto  flex md:justify-between justify-between items-center ">
+            <Link to="/" className={`h-12 w-12  md:hidden block`}>
+              <img
+                src={logoNoText}
+                alt="logo"
+                className=" h-full object-cover drop-shadow-lg"
+              />
+            </Link>
+            <ul className="hidden md:flex space-x-4 relative ">
               {listTabTop.map((navItem, index) => (
                 <li
                   className="group h-16 relative flex items-center"
@@ -241,7 +268,7 @@ function Navbar() {
         </div>
         {/* Sub tab */}
         {subTab && (
-          <ul className="hidden md:flex container m-auto mx-auto ">
+          <ul className="pl-24 hidden md:flex container m-auto mx-auto ">
             {subTab.map((navItem, index) => (
               <li key={index} className="m-0 p-0 group">
                 <NavLink to={navItem.path} className={`text-sm font-medium `}>
