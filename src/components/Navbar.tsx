@@ -1,17 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import binhDinh from "../assets/binh-dinh.png";
-import binhDuong from "../assets/binh-duong.png";
-import congAnHaNoi from "../assets/cong-an-ha-noi.png";
-import haTinh from "../assets/ha-tinh.png";
-import hagl from "../assets/hagl.jpg";
-import hcmFc from "../assets/hcm-fc.png";
-import namDinh from "../assets/nam-dinh.png";
-import quangNam from "../assets/quang-nam.jpg";
-import shbDaNang from "../assets/shb-da-nang.png";
-import thanhHoa from "../assets/thanh-hoa.png";
-import viettel from "../assets/viettel.jpg";
 import {
   CaretDownOutlined,
   CloseOutlined,
@@ -20,64 +9,8 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-
-const listClubs = [
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: binhDinh,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: binhDuong,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: congAnHaNoi,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: haTinh,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: hagl,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: hcmFc,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: namDinh,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: quangNam,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: shbDaNang,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: thanhHoa,
-  },
-  {
-    name: "Bình Định",
-    path: "/clubs/",
-    image: viettel,
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import fetcher from "@/api/fetcher";
 
 const listTabTop = [
   {
@@ -116,7 +49,13 @@ function Navbar() {
   const navigate = useNavigate();
   const tournament = location.pathname.split("/")[1];
   const user = useSelector((state: RootState) => state.user);
+  const { data: clubs, isLoading } = useQuery({
+    queryKey: ["GET_CLUBS_LIST_FOR_NAVBAR"],
+    queryFn: () =>
+      fetcher.get(`tournaments/${"vleague-1"}/clubs`).then((res) => res.data),
+  });
 
+  console.log(clubs);
   const subTab = listTabTop.find((item) => item.path === tournament)?.childen;
 
   useEffect(() => {
@@ -137,16 +76,21 @@ function Navbar() {
       {showClubs && (
         <div className="bg-gray-100 py-2 hidden md:block">
           <ul className="flex space-x-4 justify-center h-10">
-            {listClubs.map((club, index) => (
-              <li key={index}>
-                <NavLink
-                  to={club.path}
-                  className={"flex w-10 h-10 justify-center items-center"}
-                >
-                  <img src={club.image} className="w-8 hover:w-9 " alt="Logo" />
-                </NavLink>
-              </li>
-            ))}
+            {!isLoading &&
+              clubs.map((club: any, index: number) => (
+                <li key={index}>
+                  <NavLink
+                    to={`clubs/${club.id}`}
+                    className={"flex w-10 h-10 justify-center items-center"}
+                  >
+                    <img
+                      src={club.logoURL}
+                      className="w-8 h-8 object-contain hover:w-9 "
+                      alt="Logo"
+                    />
+                  </NavLink>
+                </li>
+              ))}
           </ul>
         </div>
       )}

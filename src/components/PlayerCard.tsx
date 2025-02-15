@@ -22,10 +22,10 @@ const PlayerCard = (props: IProps) => {
           <p className="text-sm">Shots</p>
           <p className="font-bold mb-2">{1}</p>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 w-[200px] h-[290px]">
           <img
             src={player.imageURL}
-            className="flex-1 h-full"
+            className="w-full object-cover h-full"
             alt={player.name}
           />
         </div>
