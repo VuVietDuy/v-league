@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import logo from "../assets/V.League.png";
 import logoNoText from "../assets/V.LeagueNoText.png";
+import { useQuery } from "@tanstack/react-query";
 
 const listClubs = [
   {
@@ -149,7 +150,7 @@ function Navbar() {
         <div className="bg-gray-100 py-2 hidden md:block">
           <ul className="flex space-x-4 justify-center h-10">
             {!isLoading &&
-              clubs.map((club: any, index: number) => (
+              clubs?.map((club: any, index: number) => (
                 <li key={index}>
                   <NavLink
                     to={`clubs/${club.id}`}
