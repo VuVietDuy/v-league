@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import FormItem from "@/components/FormItem";
 import HeaderPage from "@/components/HeaderPage";
 import { FormStatus } from "@/types/form";
 import { IClub } from "@/types/club";
 import fetcher from "@/api/fetcher";
+import { Dropdown, Spin } from "antd";
+import { DownOutlined, ReloadOutlined } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/Loading";
+import { IMatch } from "@/types/match";
 
 interface TablesItem {
   position?: number;
@@ -18,130 +22,169 @@ interface TablesItem {
   goalsAgainst?: number;
   goalDifference: number;
   points: number;
+  form: IMatch[];
 }
 
 function Tables() {
-  const [data, setData] = useState<TablesItem[]>([]);
   const { tournamentId } = useParams();
+  const [searchParams] = useSearchParams();
+  const seasonId = searchParams.get("seasonId");
 
-  useEffect(() => {
-    fetcher.get(`tournaments/${tournamentId}/tables`).then((res) => {
-      console.log(res);
-      setData(res.data);
-    });
-  }, []);
+  const { data: tables, isLoading: isLoadingTables } = useQuery({
+    queryKey: ["GET_TABLES"],
+    queryFn: () =>
+      fetcher.get(`tournaments/${tournamentId}/tables`).then((res) => res.data),
+  });
+
+  const { data: seasonsData, isLoading: isLoadingSeasonsData } = useQuery({
+    queryKey: ["GET_LISTS_SEASON_FOR_RESULTS_PAGE"],
+    queryFn: () =>
+      fetcher
+        .get(`tournaments/${tournamentId}/seasons`)
+        .then((res) => res.data),
+  });
 
   return (
     <div>
       <HeaderPage title="Bảng xếp hạng" />
-      <div className="container m-auto xl:px-12 my-32">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b">
-            <tr>
-              <th scope="col" className="px-6 py-3 font-bold">
-                Thứ hạng
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Câu lạc bộ
-              </th>
-              <th scope="col" className="px-3 py-3 w-fit">
-                Trận
-              </th>
-              <th scope="col" className="px-3 py-3">
-                Thắng
-              </th>
-              <th scope="col" className="px-3 py-3">
-                Hòa
-              </th>
-              <th scope="col" className="px-3 py-3">
-                Thua
-              </th>
-              <th scope="col" className="px-3 py-3">
-                BT-BB
-              </th>
-              <th scope="col" className="px-3 py-3">
-                HS
-              </th>
-              <th scope="col" className="px-3 py-3">
-                BTSK
-              </th>
-              <th scope="col" className="px-3 py-3  hidden lg:block">
-                Gần đây
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Điểm
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr
-                key={index}
-                className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 border-b dark:border-gray-700"
-              >
-                <td className="px-6 py-2 relative">
-                  {index <= 3 && (
-                    <div className="absolute top-0 left-0 w-1 h-full bg-[#1b39f5]"></div>
-                  )}
-                  {index == 4 && (
-                    <div className="absolute top-0 left-0 w-1 h-full bg-[#ff6900]"></div>
-                  )}
-                  {index == 5 && (
-                    <div className="absolute top-0 left-0 w-1 h-full bg-[#00be14]"></div>
-                  )}
-                  {item.position}
-                </td>
-                <td className="px-6 py-2 flex items-center gap-2">
-                  <img
-                    className="w-8 h-8 rounded-full"
-                    src={item.club.logoURL}
-                    alt=""
-                  />
-                  <span className="font-semibold">{item.club.name}</span>
-                </td>
-                <td className="px-6 py-2">{item.played}</td>
-                <td className="px-6 py-2">{item.won}</td>
-                <td className="px-6 py-2">{item.drawn}</td>
-                <td className="px-6 py-2">{item.lost}</td>
-                <td className="px-6 py-2">{item.goalsFor}</td>
-                <td className="px-6 py-2">{item.goalsAgainst}</td>
-                <td className="px-6 py-2">{item.goalDifference}</td>
-                <td className="px-6 py-2 hidden lg:block">
-                  <div className="h-full flex items-center gap-2">
-                    {index % 2 ? (
-                      <FormItem form={{ status: FormStatus.H }} />
-                    ) : (
-                      <FormItem form={{ status: FormStatus.T }} />
-                    )}
-                    {index % 3 ? (
-                      <FormItem form={{ status: FormStatus.B }} />
-                    ) : (
-                      <FormItem form={{ status: FormStatus.T }} />
-                    )}
-                    {index % 4 ? (
-                      <FormItem form={{ status: FormStatus.H }} />
-                    ) : (
-                      <FormItem form={{ status: FormStatus.T }} />
-                    )}
-                    {index % 5 ? (
-                      <FormItem form={{ status: FormStatus.B }} />
-                    ) : (
-                      <FormItem form={{ status: FormStatus.T }} />
-                    )}
-                    {index % 6 ? (
-                      <FormItem form={{ status: FormStatus.B }} />
-                    ) : (
-                      <FormItem form={{ status: FormStatus.T }} />
-                    )}
-                  </div>
-                </td>
-                <td className="px-6 py-2 font-bold text-red-600">
-                  {item.points}
-                </td>
+      <div className="container m-auto xl:px-12 mb-32">
+        <div className="flex border rounded-sm mb-6">
+          <Dropdown
+            menu={{
+              items: isLoadingSeasonsData
+                ? []
+                : seasonsData.map((season: any, index: number) => ({
+                    key: index,
+                    label: (
+                      <a
+                        className="hover:text-purple-800 text-wrap w-28"
+                        href={`?seasonId=${season.id}`}
+                      >
+                        {season.name.split(" ").slice(-1)[0]}
+                      </a>
+                    ),
+                  })),
+            }}
+          >
+            <div
+              className="w-fit px-3 py-2 flex gap-8 border-r"
+              onClick={(e) => e.preventDefault()}
+            >
+              <div>
+                <p className="text-[10px]">Lọc theo mùa giải</p>
+                <p>
+                  {seasonId === null || (isLoadingSeasonsData && <Spin />)}
+                  {seasonId !== null && !isLoadingSeasonsData
+                    ? seasonsData
+                        .filter((season: any) => season.id === +seasonId)[0]
+                        .name.split(" ")
+                        .slice(-1)[0]
+                    : !isLoadingSeasonsData &&
+                      seasonsData
+                        .filter((season: any) => season.isActive)[0]
+                        .name.split(" ")
+                        .slice(-1)[0]}
+                </p>
+              </div>
+              <DownOutlined className="text-xs" />
+            </div>
+          </Dropdown>
+          <Link
+            className="px-3 flex items-center gap-2 hover:text-purple-900"
+            to=""
+          >
+            <ReloadOutlined /> Xóa bộ lọc
+          </Link>
+        </div>
+        {isLoadingTables ? (
+          <Loading />
+        ) : (
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-500">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b">
+              <tr>
+                <th scope="col" className="px-6 py-3 font-bold">
+                  Thứ hạng
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Câu lạc bộ
+                </th>
+                <th scope="col" className="px-3 py-3 w-fit">
+                  Trận
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  Thắng
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  Hòa
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  Thua
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  BT-BB
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  HS
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  BTSK
+                </th>
+                <th scope="col" className="px-3 py-3  hidden lg:block">
+                  Gần đây
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Điểm
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tables.map((item: TablesItem, index: number) => (
+                <tr
+                  key={index}
+                  className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 border-b dark:border-gray-700"
+                >
+                  <td className="px-6 py-2 relative">
+                    {index <= 3 && (
+                      <div className="absolute top-0 left-0 w-1 h-full bg-[#1b39f5]"></div>
+                    )}
+                    {index == 4 && (
+                      <div className="absolute top-0 left-0 w-1 h-full bg-[#ff6900]"></div>
+                    )}
+                    {index == 5 && (
+                      <div className="absolute top-0 left-0 w-1 h-full bg-[#00be14]"></div>
+                    )}
+                    {item.position}
+                  </td>
+                  <td className="px-6 py-2 flex items-center gap-2">
+                    <img
+                      className="w-8 h-8 rounded-full"
+                      src={item.club.logoURL}
+                      alt=""
+                    />
+                    <span className="font-semibold">{item.club.name}</span>
+                  </td>
+                  <td className="px-6 py-2">{item.played}</td>
+                  <td className="px-6 py-2">{item.won}</td>
+                  <td className="px-6 py-2">{item.drawn}</td>
+                  <td className="px-6 py-2">{item.lost}</td>
+                  <td className="px-6 py-2">{item.goalsFor}</td>
+                  <td className="px-6 py-2">{item.goalsAgainst}</td>
+                  <td className="px-6 py-2">{item.goalDifference}</td>
+                  <td className="px-6 py-2 hidden lg:block">
+                    <div className="h-full flex items-center gap-2">
+                      {item.form.map((match) => (
+                        <FormItem match={match} clubId={item.club.id} />
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-2 font-bold text-red-600">
+                    {item.points}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

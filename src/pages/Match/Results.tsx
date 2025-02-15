@@ -5,16 +5,14 @@ import {
   ReloadOutlined,
 } from "@ant-design/icons";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Dropdown } from "antd";
+import { useQuery } from "@tanstack/react-query";
 
 import { IMatch } from "@/types/match";
 import fetcher from "@/api/fetcher";
 import { formatDate } from "@/utils/formatDate";
 import StadiumIcon from "@/components/icons/StadiumIcon";
 import HeaderPage from "@/components/HeaderPage";
-import { Dropdown, MenuProps } from "antd";
-import { IClub } from "@/types/club";
-import { ISeason } from "@/types/season";
-import { useQuery } from "@tanstack/react-query";
 
 interface Fixtures {
   [key: string]: IMatch[];
@@ -77,7 +75,7 @@ function Results() {
   }, [tournamentId, clubId, seasonId]);
 
   return (
-    <div>
+    <div className="mb-10">
       <HeaderPage title="Kết quả" />
       <div className="container m-auto px-10">
         {/* Filter */}

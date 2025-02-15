@@ -55,7 +55,6 @@ function Navbar() {
       fetcher.get(`tournaments/${"vleague-1"}/clubs`).then((res) => res.data),
   });
 
-  console.log(clubs);
   const subTab = listTabTop.find((item) => item.path === tournament)?.childen;
 
   useEffect(() => {

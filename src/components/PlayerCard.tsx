@@ -1,26 +1,21 @@
-import React from "react";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { IPlayer } from "../types/player";
 import squadBackground from "../assets/squad-bg.svg";
+import { Link } from "react-router-dom";
 
-interface IProps {
-  player: IPlayer;
-}
-
-const PlayerCard = (props: IProps) => {
+const PlayerCard = (props: any) => {
   const { player } = props;
   return (
-    <div className="border rounded">
+    <Link to={`/players/${player.id}`} className="border rounded">
       <div className="flex relative ">
         <div className="w-[100px] p-3">
           <p className="text-sm">Đã chơi</p>
-          <p className="font-bold mb-2">{1}</p>
+          <p className="font-bold mb-2">{player.appearances}</p>
           <p className="text-sm">Ghi bàn</p>
-          <p className="font-bold mb-2">{1}</p>
+          <p className="font-bold mb-2">{player.goals}</p>
           <p className="text-sm">Hỗ trọ</p>
-          <p className="font-bold mb-2">{1}</p>
+          <p className="font-bold mb-2">{player.assists}</p>
           <p className="text-sm">Shots</p>
-          <p className="font-bold mb-2">{1}</p>
+          <p className="font-bold mb-2">{player.shots}</p>
         </div>
         <div className="flex-1 w-[200px] h-[290px]">
           <img
@@ -49,7 +44,7 @@ const PlayerCard = (props: IProps) => {
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

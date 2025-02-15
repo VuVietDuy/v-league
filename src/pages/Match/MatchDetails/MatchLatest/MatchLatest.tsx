@@ -8,6 +8,8 @@ import { renderIconEvent } from "@/utils/renderIconEvent";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import ManOfTheMatch from "./ManOfTheMatch";
+import { renderPositionText } from "@/utils/renderPositionText";
+import Loading from "@/components/Loading";
 
 interface IProps {}
 
@@ -19,11 +21,9 @@ export default function MatchLatest(props: IProps) {
   const { data: match, isLoading } = useQuery({
     queryKey: ["GET_MATCH_EVENTS_LATEST"],
     queryFn: () =>
-      fetcher.get(`matches/${matchId}/events`).then((res) => {
-        console.log(res.data);
-        return res.data;
-      }),
+      fetcher.get(`matches/${matchId}/events`).then((res) => res.data),
   });
+
   const { data: voteResult, refetch: refetchVoteResult } = useQuery({
     queryKey: ["GET_MATCH_VOTES"],
     queryFn: () =>
@@ -31,11 +31,13 @@ export default function MatchLatest(props: IProps) {
         return res.data;
       }),
   });
+
   const { data: matchImages } = useQuery({
     queryKey: ["GET_MATCH_IMAGES"],
     queryFn: () =>
       fetcher.get(`matches/${matchId}/images`).then((res) => res.data),
   });
+
   const user = useSelector((state: RootState) => state.user);
 
   const onClose = () => {
@@ -46,7 +48,7 @@ export default function MatchLatest(props: IProps) {
     setIsOpenVoteModal(true);
   };
   if (isLoading) {
-    return "Is loading";
+    return <Loading />;
   }
   return (
     <div>
@@ -54,26 +56,38 @@ export default function MatchLatest(props: IProps) {
         <div className="col-span-7 p-4">
           {voteResult && (
             <div className="bg-gray-100 rounded-2xl flex flex-col items-center p-4 mb-4">
-              <div>
-                <h1 className="mb-2 text-2xl font-bold">
-                  {voteResult.playersVote[0].name}
-                </h1>
+              <p className="uppercase test-white text-xl font-semibold">
+                Cầu thủ xuất sắc
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="overflow-hidden">
+                  <img
+                    className="w-full h-52 object-cover rounded border"
+                    src={voteResult.playersVote[0].imageURL}
+                    alt=""
+                  />
+                </div>
+                <div className="flex flex-col justify-between">
+                  <div>
+                    <h1 className="mb-2 text-2xl font-bold">
+                      {voteResult.playersVote[0].name}
+                    </h1>
+                    <span className="font-bold mr-3">
+                      {voteResult.playersVote[0].shirtNumber}
+                    </span>
+                    <span>
+                      {renderPositionText(voteResult.playersVote[0].position)}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setIsOpenManOfTheMatch(true)}
+                    className="px-8 py-2 rounded bg-purple-950 text-white"
+                  >
+                    Xem thêm
+                    <ArrowRightOutlined className="ml-2" />
+                  </button>
+                </div>
               </div>
-              <div className="w-40 h-40 bg-slate-400">
-                <img src={voteResult.playersVote[0].imageURL} alt="" />
-              </div>
-              <div>
-                <p className="uppercase test-white font-medium">
-                  Cầu thủ xuất sắc
-                </p>
-              </div>
-              <button
-                onClick={() => setIsOpenManOfTheMatch(true)}
-                className="px-8 py-2 rounded bg-purple-950 text-white"
-              >
-                Xem thêm
-                <ArrowRightOutlined className="ml-2" />
-              </button>
             </div>
           )}
           {isTimeVote && (

@@ -19,7 +19,7 @@ function NewsCard(props: IProps) {
       <span className="font-bold text-sm text-gray-500 block pt-1">
         {news.tag}
       </span>
-      <p className="py-1 group-hover:underline">{news.title}</p>
+      <p className="py-1 group-hover:underline line-clamp-2">{news.title}</p>
     </Link>
   );
 }
