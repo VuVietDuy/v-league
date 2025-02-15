@@ -5,72 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Dropdown, Spin } from "antd";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
-const cardData = [
-  {
-    key: "played",
-    label: "Số trận thi đấu",
-    value: 1252,
-  },
-  {
-    label: "Số trận thắng",
-    value: 687,
-  },
-  {
-    label: "Số trận thua",
-    value: 262,
-  },
-  {
-    label: "Bàn thắng",
-    value: 2245,
-  },
-  {
-    label: "Bàn thua",
-    value: 1252,
-  },
-  {
-    label: "Số trận sạch lưới",
-    value: 476,
-  },
-];
-
-const attack = {
-  "Bàn thắng": 2245,
-  "Bàn thắng mỗi trận": 1.79,
-  "Số lần dứt điểm": 10869,
-  "Dứt điểm trúng đích": 3891,
-  "Dứt điểm chính xác": "36%",
-  "Bàn thắng penalty": 86,
-  "Cơ hội tạo ra": 1051,
-  "Bóng chạm khung thành": 300,
-};
 const teamPlay = {
-  "Số đường chuyền": 377720,
-  "Đường chuyền mỗi trận": 301.69,
+  "Số đường chuyền": 37720,
+  "Đường chuyền mỗi trận": 319,
   "Chuyền chính xác": "84%",
-  "Số lần tạt bóng": 14827,
+  "Số lần tạt bóng": 1427,
   "Tạt bóng chính xác": "21%",
 };
-const defence = {
-  "Số trận sạch lưới": 476,
-  "Số bàn thua": 1249,
-  "Bàn thua mỗi trận": 0.99,
-  "Cứu thua": 1474,
-  "Tắc bóng": 13118,
-  "Tắc bóng thành công": "70%",
-  "Cản phá cú sút": 2987,
-  "Truy cản": 2987,
-  "Phá bóng": 17058,
-  "Phá bóng bằng đầu": 6777,
-  "Tranh chấp tay đôi": 48173,
-  "Phạm lỗi dẫn đén bàn thua": 139,
-  "Phản lưới": 48,
-};
-const discipline = {
-  "Thẻ vàng": 1902,
-  "Thẻ đỏ": 108,
-  "Phạm lỗi": 2447,
-  "Việt vị": 1559,
-};
+
 export default function ClubStats() {
   const { clubId } = useParams();
   const { data: clubStats, isLoading } = useQuery({
@@ -254,19 +196,58 @@ export default function ClubStats() {
               <p className="text-xl font-bold px-2 py-3.5 border-b">
                 Phòng thủ
               </p>
-              {Object.entries(defence).map(([key, value], index) => (
-                <div
-                  key={index}
-                  className="border-b-slate-200 flex justify-between px-2 py-2.5"
-                >
-                  <span className="text-md font-light">{key}</span>
-                  <span className="text-md font-bold">
-                    {typeof value === "number"
-                      ? value.toLocaleString("en-US")
-                      : value}
-                  </span>
-                </div>
-              ))}
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">Số trận sạch lưới</span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.defence.cleanSheets === "number"
+                    ? clubStats.defence.cleanSheets.toLocaleString("en-US")
+                    : clubStats.defence.cleanSheets}
+                </span>
+              </div>
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">Số bàn thua</span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.defence.goalsConceded === "number"
+                    ? clubStats.defence.goalsConceded.toLocaleString("en-US")
+                    : clubStats.defence.goalsConceded}
+                </span>
+              </div>
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">Bàn thua mỗi trận</span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.defence.goalsConcededPermatch === "number"
+                    ? clubStats.defence.goalsConcededPermatch.toLocaleString(
+                        "en-US"
+                      )
+                    : clubStats.defence.goalsConcededPermatch}
+                </span>
+              </div>
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">Cứu thua</span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.defence.saves === "number"
+                    ? clubStats.defence.saves.toLocaleString("en-US")
+                    : clubStats.defence.saves}
+                </span>
+              </div>
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">Phản lưới</span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.defence.ownGoals === "number"
+                    ? clubStats.defence.ownGoals.toLocaleString("en-US")
+                    : clubStats.defence.ownGoals}
+                </span>
+              </div>
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">
+                  Phạm lỗi dẫn đến bàn thua
+                </span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.defence.ownGoals === "number"
+                    ? clubStats.defence.ownGoals.toLocaleString("en-US")
+                    : clubStats.defence.ownGoals}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -292,19 +273,38 @@ export default function ClubStats() {
           <div className="col-span-4 sm:col-span-2 md:col-span-1">
             <div className="rounded-md border  border-x-slate-100 h-fit bg-[#fffffd] border-b-slate-100 border-t-4 border-t-red-500 text-primary">
               <p className="text-xl font-bold px-2 py-3.5 border-b">Phạm lỗi</p>
-              {Object.entries(discipline).map(([key, value], index) => (
-                <div
-                  key={index}
-                  className="border-b-slate-200 flex justify-between px-2 py-2.5"
-                >
-                  <span className="text-md font-light">{key}</span>
-                  <span className="text-md font-bold">
-                    {typeof value === "number"
-                      ? value.toLocaleString("en-US")
-                      : value}
-                  </span>
-                </div>
-              ))}
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">Thẻ vàng</span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.discipline.yellowCard === "number"
+                    ? clubStats.discipline.yellowCard.toLocaleString("en-US")
+                    : clubStats.discipline.yellowCard}
+                </span>
+              </div>
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">Thẻ đỏ</span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.discipline.redCard === "number"
+                    ? clubStats.discipline.redCard.toLocaleString("en-US")
+                    : clubStats.discipline.redCard}
+                </span>
+              </div>
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">Phạm lỗi</span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.discipline.fouls === "number"
+                    ? clubStats.discipline.fouls.toLocaleString("en-US")
+                    : clubStats.discipline.fouls}
+                </span>
+              </div>
+              <div className="border-b-slate-200 flex justify-between px-2 py-2.5">
+                <span className="text-md font-light">Việt vị</span>
+                <span className="text-md font-bold">
+                  {typeof clubStats.discipline.offsides === "number"
+                    ? clubStats.discipline.offsides.toLocaleString("en-US")
+                    : clubStats.discipline.offsides}
+                </span>
+              </div>
             </div>
           </div>
         </div>
