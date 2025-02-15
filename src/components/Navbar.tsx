@@ -171,6 +171,9 @@ function Navbar() {
         {!(
           location.pathname.includes("vleague-1") ||
           location.pathname.includes("vleague-2") ||
+          location.pathname.includes("clubs") ||
+          location.pathname.includes("match") ||
+          location.pathname.includes("news") ||
           location.pathname === "/"
         ) && (
           <div
@@ -205,6 +208,9 @@ function Navbar() {
           <div className="container m-auto  flex md:justify-between justify-between items-center ">
             {location.pathname.includes("vleague-1") ||
             location.pathname.includes("vleague-2") ||
+            location.pathname.includes("clubs") ||
+            location.pathname.includes("match") ||
+            location.pathname.includes("news") ||
             location.pathname === "/" ? (
               <Link to="/" className={`h-12 ml-3 w-fit  `}>
                 <img
