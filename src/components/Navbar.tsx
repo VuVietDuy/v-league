@@ -169,6 +169,7 @@ function Navbar() {
           location.pathname.includes("vleague-1") ||
           location.pathname.includes("vleague-2") ||
           location.pathname.includes("clubs") ||
+          location.pathname.includes("players") ||
           location.pathname.includes("match") ||
           location.pathname.includes("news") ||
           location.pathname.includes("login") ||
@@ -208,6 +209,7 @@ function Navbar() {
             {location.pathname.includes("vleague-1") ||
             location.pathname.includes("vleague-2") ||
             location.pathname.includes("clubs") ||
+            location.pathname.includes("players") ||
             location.pathname.includes("match") ||
             location.pathname.includes("news") ||
             location.pathname.includes("login") ||
