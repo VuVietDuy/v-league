@@ -47,7 +47,6 @@ const listTabTop = [
 function Navbar() {
   const [showClubs, setShowClubs] = useState(true);
   const [isOpenNavbar, setIsOpenNavbar] = useState(false);
-  const [logoPosition, setLogoPosition] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const tournament = location.pathname.split("/")[1];
@@ -97,40 +96,6 @@ function Navbar() {
         </div>
       )}
       <div className="relative ">
-        {!(
-          location.pathname.includes("vleague-1") ||
-          location.pathname.includes("vleague-2") ||
-          location.pathname.includes("clubs") ||
-          location.pathname.includes("match") ||
-          location.pathname.includes("news") ||
-          location.pathname.includes("login") ||
-          location.pathname.includes("register") ||
-          location.pathname === "/"
-        ) && (
-          <div
-            className={`absolute overflow-hidden h-[144px] ${
-              logoPosition
-                ? "-top-[26px] -left-5 "
-                : "top-[55%] -translate-y-[55%]"
-            }`}
-          >
-            <Link
-              to="/"
-              className={`${
-                logoPosition
-                  ? "bg-white rounded-full w-40 p-8"
-                  : " w-[132px] left-4 p-4"
-              }   md:block hidden`}
-            >
-              <img
-                src={logo}
-                alt="logo"
-                className="w-full object-cover drop-shadow-lg"
-              />
-            </Link>
-          </div>
-        )}
-
         <div
           className={`bg-primary h-16 border-b-2 md:border-b-0 md:border-orange-500"
           }`}

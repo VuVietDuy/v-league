@@ -1,12 +1,12 @@
 import fetcher from "@/api/fetcher";
 import HeaderPage from "@/components/HeaderPage";
-import { Link, useSearchParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { SearchOutlined } from "@ant-design/icons";
-import { useState } from "react";
 import Loading from "@/components/Loading";
+import { SearchOutlined } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 
-function NewsList() {
+export default function SearchResult() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [key, setKey] = useState(searchParams.get("key"));
   const {
@@ -14,7 +14,7 @@ function NewsList() {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["GET_LIST_NEWS"],
+    queryKey: ["GET_LIST_NEWS_SEARCH"],
     queryFn: () =>
       fetcher.get("news", { params: { key: key } }).then((res) => res.data),
   });
@@ -26,7 +26,7 @@ function NewsList() {
 
   const handleChange = (e: any) => {
     setKey(e.target.value);
-    setSearchParams("key", e.target.value);
+    setSearchParams(e.target.value);
     refetch();
   };
 
@@ -37,12 +37,13 @@ function NewsList() {
     <div>
       <HeaderPage
         title={
-          <div className="flex">
-            <h1 className="mr-6">Tin tức</h1>
-            <form onSubmit={handleSearch} className="max-w-md h-full">
+          <div className="">
+            <h1 className="mr-6 mb-2">Kết quả tìm kiếm</h1>
+            <form onSubmit={handleSearch} className="w-80 h-full">
               <div className="relative">
                 <input
                   onChange={handleChange}
+                  value={key || ""}
                   className="hover:border hover:border-purple-950 block h-14 w-80 p-4 pe-10 text-base text-gray-900 border rounded-lg font-normal bg-gray-50 "
                   placeholder="Tìm kiếm"
                 />
@@ -58,6 +59,15 @@ function NewsList() {
         }
       />
       <div className="container m-auto mt-10 mb-20">
+        <div className="mb-10">
+          <span className="mr-2 font-bold">{newsData.length}</span>{" "}
+          <span>kết quả</span>
+        </div>
+        <hr className="mb-8" />
+        <p className="text-xl mb-4">
+          <span className="font-bold">Tin tức mới nhất: </span>"
+          {key?.split("%").join(" ")}"
+        </p>
         {newsData.map((news: any, index: any) => (
           <Link
             to={`/news/${news.id}`}
@@ -90,5 +100,3 @@ function NewsList() {
     </div>
   );
 }
-
-export default NewsList;

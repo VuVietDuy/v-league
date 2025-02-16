@@ -10,6 +10,7 @@ import { RootState } from "@/store/store";
 import ManOfTheMatch from "./ManOfTheMatch";
 import { renderPositionText } from "@/utils/renderPositionText";
 import Loading from "@/components/Loading";
+import { Image } from "antd";
 
 interface IProps {}
 
@@ -128,11 +129,11 @@ export default function MatchLatest(props: IProps) {
         <div className="col-span-5 flex flex-col gap-4 p-4">
           {matchImages &&
             matchImages.map((matchImage: any, index: any) => (
-              <img
+              <Image
                 src={matchImage.imageURL}
                 className="rounded-2xl h-[200px] object-cover"
                 key={index}
-              ></img>
+              ></Image>
             ))}
         </div>
       </div>

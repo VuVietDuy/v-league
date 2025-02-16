@@ -20,7 +20,8 @@ import Category from "@/pages/Category/Category";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { persistor, store } from "@/store/store";
-import Search from "./pages/Search/Search";
+import Search from "@/pages/Search/Search";
+import SearchResult from "@/pages/Search/SearchResult";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ function App() {
                 <Route path="" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/search-result" element={<SearchResult />} />
                 <Route path="/:tournamentId/fixtures/" element={<Fixtures />} />
                 <Route path="/:tournamentId/results/" element={<Results />} />
                 <Route path="/:tournamentId/tables/" element={<Tables />} />

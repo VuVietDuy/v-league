@@ -14,11 +14,11 @@ export default function HeaderPage({ title, className, ...props }: any) {
           src={primaryGraphic}
         />
       </div>
-      <h1 className="absolute top-0 left-0 right-0 bottom-0 flex items-center">
-        <span className="container m-auto text-xl md:text-6xl text-white font-semibold ">
+      <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center">
+        <div className="container m-auto text-xl md:text-6xl text-white font-semibold ">
           {title}
-        </span>
-      </h1>
+        </div>
+      </div>
     </header>
   );
 }
