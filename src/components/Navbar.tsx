@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import binhDinh from "../assets/binh-dinh.png";
 import binhDuong from "../assets/binh-duong.png";
@@ -128,12 +128,22 @@ function Navbar() {
 
   const subTab = listTabTop.find((item) => item.path === tournament)?.childen;
 
+  const isShowSubnav = useMemo(() => {
+    if (
+      location.pathname.includes(listTabTop[1].path) ||
+      location.pathname.includes(listTabTop[2].path)
+    )
+      return true;
+    return;
+  }, [location.pathname]);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY === 0) {
         setShowClubs(true);
+        setLogoPosition(false);
       } else {
         setShowClubs(false);
+        setLogoPosition(true);
       }
     };
 
@@ -165,17 +175,15 @@ function Navbar() {
         </div>
       )}
       <div className="relative ">
-        {!(
-          location.pathname.includes("vleague-1") ||
-          location.pathname.includes("vleague-2") ||
-          location.pathname.includes("clubs") ||
+        {/* {(
           location.pathname.includes("players") ||
           location.pathname.includes("match") ||
           location.pathname.includes("news") ||
           location.pathname.includes("login") ||
           location.pathname.includes("register") ||
           location.pathname === "/"
-        ) && (
+        ) && ( */}
+        {isShowSubnav && (
           <div
             className={`absolute overflow-hidden h-[144px] ${
               logoPosition
@@ -206,15 +214,7 @@ function Navbar() {
           }`}
         >
           <div className="container m-auto  flex md:justify-between justify-between items-center ">
-            {location.pathname.includes("vleague-1") ||
-            location.pathname.includes("vleague-2") ||
-            location.pathname.includes("clubs") ||
-            location.pathname.includes("players") ||
-            location.pathname.includes("match") ||
-            location.pathname.includes("news") ||
-            location.pathname.includes("login") ||
-            location.pathname.includes("register") ||
-            location.pathname === "/" ? (
+            {!isShowSubnav ? (
               <Link to="/" className={`h-12 ml-3 w-fit  flex-shrink-0`}>
                 <img
                   src={logoNoText}
@@ -323,7 +323,7 @@ function Navbar() {
         </div>
         {/* Sub tab */}
         {subTab && (
-          <ul className="hidden md:flex container m-auto mx-auto ">
+          <ul className="hidden md:flex container m-auto mx-auto pl-20">
             {subTab.map((navItem, index) => (
               <li key={index} className="m-0 p-0 group">
                 <NavLink to={navItem.path} className={`text-sm font-medium `}>
