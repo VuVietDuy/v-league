@@ -15,15 +15,21 @@ import viettel from "../assets/viettel.jpg";
 import {
   CaretDownOutlined,
   CloseOutlined,
+  DownOutlined,
+  LogoutOutlined,
   MenuOutlined,
   SearchOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import logo from "../assets/V.League.png";
 import logoNoText from "../assets/V.LeagueNoText.png";
 import { useQuery } from "@tanstack/react-query";
 import fetcher from "@/api/fetcher";
+import { Dropdown, Space } from "antd";
+import { logoutUser } from "@/store/slice/user.slice";
+import { deleteToken } from "@/store/slice/token.slice";
 
 const listClubs = [
   {
@@ -118,6 +124,7 @@ function Navbar() {
   const [isOpenNavbar, setIsOpenNavbar] = useState(false);
   const [logoPosition, setLogoPosition] = useState(false);
   const location = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const tournament = location.pathname.split("/")[1];
   const user = useSelector((state: RootState) => state.user);
@@ -153,6 +160,26 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    navigate("/login");
+    dispatch(logoutUser());
+    dispatch(deleteToken());
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: <span onClick={() => navigate("/profile")}>Tài khoản</span>,
+      icon: <UserOutlined />,
+    },
+
+    {
+      key: "2",
+      label: <span onClick={handleLogout}>Đăng xuất</span>,
+      icon: <LogoutOutlined />,
+    },
+  ];
   return (
     <nav className="sticky top-0 z-10 bg-white shadow-md">
       {showClubs && (
@@ -177,14 +204,6 @@ function Navbar() {
         </div>
       )}
       <div className="relative ">
-        {/* {(
-          location.pathname.includes("players") ||
-          location.pathname.includes("match") ||
-          location.pathname.includes("news") ||
-          location.pathname.includes("login") ||
-          location.pathname.includes("register") ||
-          location.pathname === "/"
-        ) && ( */}
         {isShowSubnav && (
           <div
             className={`absolute overflow-hidden h-[144px] ${
@@ -279,8 +298,15 @@ function Navbar() {
               ))}
             </ul>
             <div className="h-full flex items-center p-2 gap-3">
-              {user.id ? (
-                <p className="text-white font-bold">{user.name}</p>
+              {user?.id ? (
+                <Dropdown menu={{ items }}>
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      <p className="text-white font-bold">{user?.name}</p>
+                      <DownOutlined className="text-white" />
+                    </Space>
+                  </a>
+                </Dropdown>
               ) : (
                 <a
                   href="/login"

@@ -1,4 +1,4 @@
-import { Form } from "antd";
+import { Form, message } from "antd";
 import { ErrorMessage, Formik } from "formik";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -39,11 +39,18 @@ export default function Register() {
     };
     console.log("check values", values);
 
-    fetcher.post("auth/signup", data).then((res) => {
-      dispatch(loginUser(res.data.data.user));
-      dispatch(setToken(res.data.data.accessToken));
-      navigate("/");
-    });
+    fetcher
+      .post("auth/signup", data)
+      .then((res) => {
+        dispatch(loginUser(res.data.data.user));
+        dispatch(setToken(res.data.data.accessToken));
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log("error", err);
+        message.error("Email đã được sử dụng, vui lòng chọn email khác!");
+        // Handle error here
+      });
   };
   return (
     <div>

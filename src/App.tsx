@@ -21,6 +21,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { persistor, store } from "@/store/store";
 import Search from "./pages/Search/Search";
+import { Profile } from "./pages/Profile/Profile";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/search" element={<Search />} />
                 <Route path="" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/:tournamentId/fixtures/" element={<Fixtures />} />
                 <Route path="/:tournamentId/results/" element={<Results />} />
