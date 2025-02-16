@@ -9,8 +9,7 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import logo from "../assets/V.League.png";
-import logoNoText from "../assets/V.LeagueNoText.png";
+import logoNoText from "@/assets/V.LeagueNoText.png";
 import { useQuery } from "@tanstack/react-query";
 import fetcher from "@/api/fetcher";
 
@@ -54,7 +53,9 @@ function Navbar() {
   const { data: clubs, isLoading } = useQuery({
     queryKey: ["GET_CLUBS_LIST_FOR_NAVBAR"],
     queryFn: () =>
-      fetcher.get(`tournaments/${"vleague-1"}/clubs`).then((res) => res.data),
+      fetcher.get(`tournaments/${"vleague-1"}/clubs`).then((res) => {
+        return res.data;
+      }),
   });
 
   const subTab = listTabTop.find((item) => item.path === tournament)?.childen;
@@ -155,8 +156,10 @@ function Navbar() {
               </ul>
             </div>
             <div className="h-full flex items-center p-2 gap-3">
-              {user.id ? (
-                <p className="text-white font-bold">{user.name}</p>
+              {user?.id ? (
+                <Link to={`/profile`} className="text-white font-bold">
+                  {user?.name}
+                </Link>
               ) : (
                 <a
                   href="/login"
@@ -201,7 +204,7 @@ function Navbar() {
         </div>
         {/* Sub tab */}
         {subTab && (
-          <ul className="hidden md:flex container m-auto mx-auto ">
+          <ul className="hidden md:flex container m-auto mx-auto pl-20">
             {subTab.map((navItem, index) => (
               <li key={index} className="m-0 p-0 group">
                 <NavLink to={navItem.path} className={`text-sm font-medium `}>
@@ -238,7 +241,10 @@ function Navbar() {
           <div className="absolute top-0 left-52 sm:left-72 right-0 bottom-0 bg-white">
             <ul className="text-primary">
               {listTabTop[0].childen?.map((item, index) => (
-                <li className="hover:bg-purple-600 py-3 px-2 text-xs border-b">
+                <li
+                  key={index}
+                  className="hover:bg-purple-600 py-3 px-2 text-xs border-b"
+                >
                   <a href="#">{item.title}</a>
                 </li>
               ))}

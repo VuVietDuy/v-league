@@ -20,6 +20,7 @@ import Category from "@/pages/Category/Category";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { persistor, store } from "@/store/store";
+import { Profile } from "./pages/Profile/Profile";
 import Search from "@/pages/Search/Search";
 import SearchResult from "@/pages/Search/SearchResult";
 
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/search" element={<Search />} />
                 <Route path="" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/search-result" element={<SearchResult />} />
                 <Route path="/:tournamentId/fixtures/" element={<Fixtures />} />

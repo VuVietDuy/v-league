@@ -39,7 +39,9 @@ export default function PlayerDetails() {
 
         <div className="flex-1 flex flex-col  pl-6  ">
           <div className="flex flex-1 h-[230px] justify-between items-center   ">
-            <p className=" text-3xl md:text-5xl align-middle ">{player.name}</p>
+            <p className=" text-3xl md:text-5xl align-middle ">
+              {player?.name}
+            </p>
             <p className="text-[135px] md:text-[180px] leading-[180px] font-bold">
               {player?.shirtNumber}
             </p>
@@ -130,21 +132,21 @@ export default function PlayerDetails() {
             <div className=" px-4 py-2.5 flex items-center justify-between">
               <span className="text-md font-light">Ra sân</span>
               <span className="text-md font-semibold">
-                {player.appearances}
+                {player?.appearances}
               </span>
             </div>
             <div className=" px-4 py-2.5 flex items-center justify-between">
               <span className="text-md font-light">Bàn thắng</span>
-              <span className="text-md font-semibold">{player.goals}</span>
+              <span className="text-md font-semibold">{player?.goals}</span>
             </div>
             <div className=" px-4 py-2.5 flex items-center justify-between">
               <span className="text-md font-light">Kiến tạo</span>
-              <span className="text-md font-semibold">{player.assists}</span>
+              <span className="text-md font-semibold">{player?.assists}</span>
             </div>
             <div className=" px-4 py-2.5 flex items-center justify-between">
               <span className="text-md font-light">Giữ sạch lưới</span>
               <span className="text-md font-semibold">
-                {player.cleanSheets}
+                {player?.cleanSheets}
               </span>
             </div>
 

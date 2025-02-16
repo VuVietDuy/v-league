@@ -1,8 +1,8 @@
 import { createSlug } from "@/utils/createSlug";
 import { SearchOutlined } from "@ant-design/icons";
-import { Divider, Input } from "antd";
+import { Divider } from "antd";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const suggestedSearch = [
   "Lịch thi đấu",
@@ -25,23 +25,20 @@ const playerSuggestions = [
 ];
 
 function Search() {
-  const [searchText, setSearchText] = useState<string>("");
-  const handleOnChange = (e: any) => {
-    setSearchText(e.target.value);
-  };
-
+  const navigate = useNavigate();
+  const [key, setKey] = useState("");
   const handleSearch = (e: any) => {
     e.preventDefault();
+    navigate(`/search-result?key=${key}`);
   };
 
-  const handleChange = (e: any) => {};
   return (
     <div className="container lg:w-[65vw] pb-16 md:w-[90vw] mx-auto">
       <div className=" mt-14 mx-auto w-full  items-center transition-all duration-300">
         <form onSubmit={handleSearch} className=" h-full">
           <div className="relative">
             <input
-              onChange={handleChange}
+              onChange={(e) => setKey(e.target.value)}
               className="hover:border hover:border-purple-950 block w-full p-4 pe-10 text-base text-gray-900 border rounded-lg font-normal bg-gray-50 "
               placeholder="Tìm kiếm"
             />
@@ -53,22 +50,6 @@ function Search() {
             </button>
           </div>
         </form>
-
-        {searchText !== "" && (
-          <div className="top-[calc(104%)] absolute right-0 left-0 min-h-20    flex flex-col overflow-auto h-[calc(200px)] shadow-md">
-            {playerSuggestions.map((item, id) => {
-              return (
-                <Link
-                  className=" text-lg py-3.5 px-3  text-primary bg-[#f5f2f5] hover:bg-purple-600  hover:text-white transition-all duration-150 ease-in-out rounded-none flex leading-10 items-center "
-                  key={id}
-                  to={`?term=${createSlug(item)}`}
-                >
-                  <span className="h-full">{item}</span>
-                </Link>
-              );
-            })}
-          </div>
-        )}
       </div>
       <Divider className="my-14 border-gray-300" />
 
