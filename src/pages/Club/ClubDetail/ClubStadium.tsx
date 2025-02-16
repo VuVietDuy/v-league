@@ -1,11 +1,25 @@
+import fetcher from "@/api/fetcher";
+import { IClub } from "@/types/club";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 function ClubStadium() {
+  const { clubId } = useParams();
+  const [clubData, setClubData] = useState<IClub>();
+
+  useEffect(() => {
+    fetcher.get(`/clubs/${clubId}`).then((res) => {
+      setClubData(res.data.data);
+    });
+  }, [clubId]);
   return (
     <div className="mb-20">
       <div className="container px-10 m-auto grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <div className="pr-6">
             <p className="mb-2">
-              <strong>Sức chứa: </strong> 42.918 nguoi
+              <strong>Sức chứa: </strong> {clubData?.stadiumCapacity || 4500}{" "}
+              nguoi
             </p>
             <p className="mb-2">
               <strong>Mở cửa:</strong> 8PM - 12AM
@@ -14,17 +28,18 @@ function ClubStadium() {
               <strong>Kích thước sân:</strong> 105m x 68m
             </p>
             <p className="mb-2">
-              <strong>Địa chỉ sân vận động:</strong> Đường 30/4, Đại lộ Bình
-              Dương, TP Thủ Dầu
+              <strong>Địa chỉ sân vận động:</strong> {clubData?.stadiumAddress}
             </p>
             <p className="mb-2">
-                Một, Bình Dương Là sân nhà của Aston Villa từ năm 1897, Villa
-              Park là một trong số ít sân vận động đã tổ chức các trận đấu quốc
-              tế trong ba thế kỷ khác nhau, trận đấu quốc tế cấp cao đầu tiên
-              diễn ra vào năm 1899. Ngoài ra, đây là địa điểm thường xuyên tổ
-              chức các trận bán kết Cúp FA trước khi chúng được chuyển đến
-              Wembley.
+                Một, {clubData?.stadium} Là sân nhà của {clubData?.name} từ năm{" "}
+              {clubData?.foundedYear}, {clubData?.name} là một trong số ít sân
+              vận động đã tổ chức các trận đấu quốc tế trong ba thế kỷ khác
+              nhau, trận đấu quốc tế cấp cao đầu tiên diễn ra vào năm{" "}
+              {clubData?.foundedYear || 2001}. Ngoài ra, đây là địa điểm thường
+              xuyên tổ chức các trận bán kết Cúp Vleague1 trước khi chúng được
+              chuyển đến {clubData?.stadium}.
             </p>
+            <p className="mb-2">{clubData?.stadiumDescription}.</p>
           </div>
         </div>
         <div className="w-">

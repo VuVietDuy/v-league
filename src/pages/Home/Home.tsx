@@ -10,6 +10,8 @@ import fetcher from "@/api/fetcher";
 import { IMatch } from "@/types/match";
 import { formatDate } from "@/utils/formatDate";
 import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/Loading";
+import FeaturedPlayer from "@/components/FeaturedPlayer";
 
 interface TablesItem {
   position?: number;
@@ -36,6 +38,16 @@ function Home() {
         return res.data;
       }),
   });
+
+  const { data: featuredPlayer, isLoading: isLoadingFeaturedPlayer } = useQuery(
+    {
+      queryKey: ["GET_LIST_FEATURED_PLAYER"],
+      queryFn: () =>
+        fetcher.get("players/feature").then((res) => {
+          return res.data;
+        }),
+    }
+  );
 
   useEffect(() => {
     fetcher.get(`tournaments/vleague-1/fixtures`).then((res) => {
@@ -99,7 +111,7 @@ function Home() {
               </NavLink>
             </div>
           </div>
-          <div className="rounded-xl overflow-hidden border mt-4">
+          <div className="rounded-xl overflow-hidden border mt-4 mb-6">
             <div className="py-4 bg-blue-500">
               <p className="text-center font-bold text-xl  text-white">
                 Bảng xếp hạng
@@ -150,6 +162,18 @@ function Home() {
                 <ArrowRightOutlined />
               </NavLink>
             </div>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Cầu thủ nổi bật</h2>
+            {isLoadingFeaturedPlayer ? (
+              <Loading />
+            ) : (
+              <div className="flex flex-col gap-3">
+                {featuredPlayer.map((player: any, index: number) => (
+                  <FeaturedPlayer key={index} player={player} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
         {listNews && (
