@@ -8,6 +8,7 @@ import { DownOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/Loading";
 import { IMatch } from "@/types/match";
+import { useEffect } from "react";
 
 interface TablesItem {
   position: number;
@@ -28,7 +29,11 @@ function Tables() {
   const [searchParams] = useSearchParams();
   const seasonId = searchParams.get("seasonId");
 
-  const { data: tables, isLoading: isLoadingTables } = useQuery({
+  const {
+    data: tables,
+    isLoading: isLoadingTables,
+    refetch: refetchTables,
+  } = useQuery({
     queryKey: ["GET_TABLES"],
     queryFn: async () => {
       let params = {};
@@ -43,7 +48,11 @@ function Tables() {
     },
   });
 
-  const { data: seasonsData, isLoading: isLoadingSeasonsData } = useQuery({
+  const {
+    data: seasonsData,
+    isLoading: isLoadingSeasonsData,
+    refetch: refetchSeasonsData,
+  } = useQuery({
     queryKey: ["GET_LISTS_SEASON_FOR_RESULTS_PAGE"],
     queryFn: () =>
       fetcher
@@ -51,6 +60,10 @@ function Tables() {
         .then((res) => res.data),
   });
 
+  useEffect(() => {
+    refetchTables();
+    refetchSeasonsData();
+  }, [tournamentId]);
   return (
     <div>
       <HeaderPage title="Bảng xếp hạng" />
