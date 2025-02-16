@@ -24,7 +24,7 @@ export default function NewsDetail() {
   }
 
   return (
-    <div>
+    <div className="mb-20">
       <header
         className={`relative mb-6 md:mb-8 min-h-[120px] md:min-h-[195px] w-full`}
       >

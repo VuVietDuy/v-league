@@ -5,24 +5,13 @@ import MatchFixtures from "./MatchFixtures";
 import MatchStats from "./MatchStats";
 import MatchLineups from "./MatchLineups";
 import MatchLatest from "./MatchLatest/MatchLatest";
-import fetcher from "@/api/fetcher";
-import { IMatch } from "@/types/match";
 import MatchEvents from "./MatchEvents";
 
 export default function MatchDetails() {
-  const { matchId } = useParams();
   const [tab, setTab] = useState("MatchLatest");
 
-  const [match, setMatch] = useState<IMatch>();
-
-  useEffect(() => {
-    fetcher.get(`matches/${matchId}`).then((res) => {
-      setMatch(res.data.data);
-    });
-  }, []);
-
   return (
-    <div className="mt-10">
+    <div className="mt-10 mb-20">
       <div className="container m-auto">
         <div className="grid grid-cols-3 gap-6">
           {/* <div>{isLoading && <div>Loading</div>}</div> */}
@@ -57,23 +46,23 @@ export default function MatchDetails() {
                     Đội hình
                   </a>
                 </li>
-                {/* <li className="me-2">
+                <li className="me-2">
                   <a
                     className={`inline-block p-4 rounded-t-lg cursor-pointer ${
-                      tab === "Stats"
+                      tab === "MatchStats"
                         ? "text-blue-600 bg-gray-100"
                         : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
                     }`}
-                    onClick={() => setTab("Stats")}
+                    onClick={() => setTab("MatchStats")}
                   >
                     Thống kê
                   </a>
-                </li> */}
+                </li>
               </ul>
               <div>
                 {tab === "MatchLatest" && <MatchLatest />}
                 {tab === "MatchLineups" && <MatchLineups />}
-                {tab === "Stats" && <MatchStats />}
+                {tab === "MatchStats" && <MatchStats />}
               </div>
             </div>
           </div>

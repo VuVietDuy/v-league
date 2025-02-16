@@ -30,10 +30,18 @@ function Tables() {
 
   const { data: tables, isLoading: isLoadingTables } = useQuery({
     queryKey: ["GET_TABLES"],
-    queryFn: () =>
-      fetcher.get(`tournaments/${tournamentId}/tables`).then((res) => res.data),
+    queryFn: async () => {
+      let params = {};
+      if (seasonId) {
+        params = {
+          seasonId: seasonId,
+        };
+      }
+      return fetcher
+        .get(`tournaments/${tournamentId}/tables`, { params: params })
+        .then((res) => res.data);
+    },
   });
-  console.log(tables);
 
   const { data: seasonsData, isLoading: isLoadingSeasonsData } = useQuery({
     queryKey: ["GET_LISTS_SEASON_FOR_RESULTS_PAGE"],

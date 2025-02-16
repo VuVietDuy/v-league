@@ -8,7 +8,7 @@ interface IProps {
 function NewsCard(props: IProps) {
   const { news } = props;
   return (
-    <Link to={`news/${news.id}`} className="group hover:cursor-pointer">
+    <Link to={`/news/${news.id}`} className="group hover:cursor-pointer">
       <div className=" aspect-[16/9] rounded overflow-hidden">
         <img
           src={news.thumbnail}

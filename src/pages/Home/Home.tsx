@@ -66,7 +66,7 @@ function Home() {
   }, []);
 
   return (
-    <div className=" mt-8">
+    <div className=" mt-8 mb-20">
       <div className="flex px-2 flex-wrap container m-auto">
         <div className="w-full md:w-[326px] ">
           <div className="rounded-xl overflow-hidden border">
