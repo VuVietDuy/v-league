@@ -23,6 +23,7 @@ import { RootState } from "@/store/store";
 import logo from "../assets/V.League.png";
 import logoNoText from "../assets/V.LeagueNoText.png";
 import { useQuery } from "@tanstack/react-query";
+import fetcher from "@/api/fetcher";
 
 const listClubs = [
   {
@@ -123,7 +124,9 @@ function Navbar() {
   const { data: clubs, isLoading } = useQuery({
     queryKey: ["GET_CLUBS_LIST_FOR_NAVBAR"],
     queryFn: () =>
-      fetcher.get(`tournaments/${"vleague-1"}/clubs`).then((res) => res.data),
+      fetcher.get(`tournaments/${"vleague-1"}/clubs`).then((res) => {
+        return res.data;
+      }),
   });
 
   const subTab = listTabTop.find((item) => item.path === tournament)?.childen;
@@ -150,7 +153,6 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   return (
     <nav className="sticky top-0 z-10 bg-white shadow-md">
       {showClubs && (
