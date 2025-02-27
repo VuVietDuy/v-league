@@ -351,7 +351,7 @@ function Navbar() {
         </div>
         {/* Sub tab */}
         {subTab && (
-          <ul className="hidden md:flex container m-auto mx-auto pl-20">
+          <ul className="hidden md:flex container m-auto  pl-20 lg:pl-[9rem]">
             {subTab.map((navItem, index) => (
               <li key={index} className="m-0 p-0 group">
                 <NavLink to={navItem.path} className={`text-sm font-medium `}>
